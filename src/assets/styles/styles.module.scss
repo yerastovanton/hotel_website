@@ -1,0 +1,24 @@
+@use './normalize.module.scss';
+
+@use './vars.module.scss';
+@use './mixins.module.scss';
+@use './theme.module.scss';
+@use './fonts.module.scss';
+
+@use '../../pages/website/temple/temple.module.scss';
+@use '../../pages/website/temple2/temple2.module.scss';
+
+
+html {
+  font-family: "Montserrat", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  text-align: left;
+  color: theme.$font-color-100;
+  font-size: 14px;
+
+  background-color: theme.$primary-bg-color;
+
+  overflow-wrap: anywhere;
+  overflow: hidden;
+};

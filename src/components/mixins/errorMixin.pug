@@ -1,0 +1,17 @@
+mixin errorFieldMixin(fieldMask, placeholder, addButton, maxLength)
+    if ((fieldMask != 'text' || fieldMask != 'email' || fieldMask != 'date' || fieldMask != 'password') && (/^[A-Za-zА-Яа-яЁё]+$/.test(fieldMask) === false && fieldMask.length > maxLength))
+        h1.text_h1 Error mask
+    if (((fieldMask === 'email' && placeholder != 'Email') || (fieldMask === 'date' && placeholder != 'ДД.ММ.ГГГГ') || (fieldMask === 'password' && placeholder != 'Пароль')) && (/^[A-Za-zА-Яа-яЁё]+$/.test(placeholder) === false && placeholder.length > maxLength))
+        h1.text_h1 Error placeholder
+    if (addButton != true && addButton != false)
+        h1.text_h1 Error button
+
+mixin errorCheckboxMixin(checkboxTitle, checkboxDescription, checkboxName, checkboxIsChecked)
+    if (/^[A-Za-zА-Яа-яЁё\s]+$/.test(checkboxTitle) === false)
+        h1.text_h1 Error checkboxTitle
+    if (/^[A-Za-zА-Яа-яЁё0-9\s]+\.?$/.test(checkboxDescription) === false)
+        h1.text_h1 Error checkboxDescription
+    if (/^[A-Za-z]+$/.test(checkboxName) === false)
+        h1.text_h1 Error checkboxName
+    if (checkboxIsChecked != true && checkboxIsChecked != false)
+        h1.text_h1 Error checkboxIsChecked

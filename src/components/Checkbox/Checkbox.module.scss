@@ -1,0 +1,66 @@
+@use '@styles/theme.module.scss';
+
+.checkbox {
+  $height: 1.429em;
+
+  &__label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: $height * 0.55;
+    cursor: pointer;
+
+    &_rich {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      grid-template-areas:
+        "input title"
+        "null description";
+      justify-content: start;
+    };
+  };
+
+  &__title {
+    grid-area: title;
+    align-content: center;
+  };
+
+  &__description {
+    grid-area: description;
+    align-content: center;
+  };
+
+  &__input {
+    appearance: none;
+    box-sizing: border-box;
+    align-self: center;
+    height: $height;
+    width: $height;
+    border-style: solid;
+    border-width: $height * 0.05;
+    border-color: theme.$border-default-color;
+    border-radius: $height * 0.2;
+    grid-area: input;
+    outline: none;
+    position: relative;
+    transition: background 0.1s ease-in-out;
+
+    &:checked {
+      border-color: theme.$border-checked-color;
+
+      &::after {
+        content: '';
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(theme.$primary-gradient-color-1, theme.$primary-gradient-color-2);
+        clip-path: polygon(32% 39.5%, 46.5% 54%, 68% 32.5%, 75% 39.5%, 46.5% 68%, 25% 46.5%);
+      };
+    };
+
+    &:hover,
+    &:focus-visible {
+      border-color: theme.$border-hovered-and-focused-color;
+    };
+  };
+};

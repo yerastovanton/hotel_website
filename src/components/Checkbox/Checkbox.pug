@@ -1,0 +1,32 @@
+include ../mixins/errorMixin.pug
+
+mixin inputCheckboxMixin(checkboxName, checkboxTitle, checkboxIsChecked)
+    input(
+        class = 'checkbox__input',
+        type = 'checkbox',
+        name = checkboxName,
+        value = checkboxTitle,
+        checked = checkboxIsChecked || false
+        )
+
+mixin checkboxMixin(props = {})
+    -
+        const {
+        checkboxTitle = 'Можно курить tyutyutrttttttttttttttttttttttttrhyu htyhtyhtyhdtyhdt rthdrthdrthrthrth rthrthrthrthd',
+        checkboxDescription = '',
+        checkboxName = 'ChekboxName', 
+        checkboxIsChecked = true
+        } = props
+    
+    +errorCheckboxMixin(checkboxTitle, description, checkboxName, checkboxIsChecked)
+
+    if (checkboxLabel != '' && checkboxDescription != '')
+        label.checkbox__label.checkbox__label_rich
+            +inputCheckboxMixin(checkboxName, checkboxTitle , checkboxIsChecked)
+            span.text.text_h3.checkbox__title= checkboxTitle
+            span.text.text_body.checkbox__description= checkboxDescription
+            
+    if (checkboxLabel != '' && checkboxDescription === '')
+        label.checkbox__label
+            +inputCheckboxMixin(checkboxName, checkboxTitle , checkboxIsChecked)
+            span.text.text_body.checkbox__title= checkboxTitle

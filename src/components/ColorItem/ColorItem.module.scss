@@ -1,0 +1,55 @@
+@use '@styles/vars.module.scss';
+
+.color-item {
+    box-sizing: border-box;
+    // padding-bottom: 14.3%;
+    // padding-top: 14.3%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    // row-gap: clamp(5px, 14.3%, 50px);
+
+        &__rectangle {
+            height: 100%;
+            width: calc( 100% * height );
+            border-radius: calc( 11.67% * height );
+            color: vars.$dark-shade-100;
+
+                &_color-purple-1 {
+                    color: vars.$purple-1;
+                };
+
+                &_color-green {
+                    color: vars.$green;
+                };
+
+                &_color-dark-shade-100 {
+                    color: vars.$dark-shade-100;
+                };
+
+                &_color-dark-shade-75 {
+                    color: vars.$dark-shade-75;
+                };
+
+                &_color-dark-shade-50 {
+                    color: vars.$dark-shade-50;
+                };
+
+                &_color-dark-shade-25 {
+                    color: vars.$dark-shade-25;
+                };
+
+                &_color-dark-shade-5 {
+                    color: vars.$dark-shade-5;
+                };
+        };
+
+        &__description {
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: center;
+        };
+};

@@ -1,0 +1,17 @@
+mixin buttonMixin(props = {})
+    -
+        const {
+        buttonName = 'buttonName',
+        buttonTheme = 'primary',
+        buttonText = 'Click me', 
+        buttonUrl = 'https://example.com'
+        } = props
+
+        const buttonClasses = `button_${buttonTheme}`
+        const buttonEvent = `window.location.href='${buttonUrl}';`
+
+    button.button(
+        class = buttonClasses,
+        name = buttonName,
+        onClick = buttonEvent
+        )= buttonText

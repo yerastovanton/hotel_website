@@ -1,0 +1,14 @@
+doctype html
+html(lang= 'ru')
+  head
+    meta(charset='utf-8')
+    title= 'Быстрый запуск Webpack'
+  body
+    p Файл откомпилирован шаблонизатором Pug
+    label.radio-button__label
+      input.radio-button__base
+
+    include ./website/temple/temple.pug
+    include ./website/temple2/temple2.pug
+
+    +buttonOrder

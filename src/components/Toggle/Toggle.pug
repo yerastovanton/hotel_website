@@ -1,0 +1,8 @@
+mixin toggleMixin(toggleTitle = 'Мужчина', toggleName = 'radioButtonName', toggleIsChecked = false)
+    label.text.text_body.toggle__label= toggleTitle
+        input(
+            type = 'checkbox',
+            name = toggleName,
+            value = toggleTitle,
+            checked = toggleIsChecked || false
+        ).toggle__input

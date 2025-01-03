@@ -1,0 +1,32 @@
+mixin rateButtonMixin(rateButtonName = 'rateButtonName', rateButtonValue = 3)
+    fieldset.rate-button__fieldset
+        input(
+            type = 'radio',
+            name = rateButtonName,
+            value = 5,
+            checked = rateButtonValue === 5 ? true : false
+        ).rate-button__input
+        input(
+            type = 'radio',
+            name = rateButtonName,
+            value = 4,
+            checked = rateButtonValue === 4 ? true : false
+        ).rate-button__input
+        input(
+            type = 'radio',
+            name = rateButtonName,
+            value = 3,
+            checked = rateButtonValue === 3 ? true : false
+        ).rate-button__input
+        input(
+            type = 'radio',
+            name = rateButtonName,
+            value = 2,
+            checked = rateButtonValue === 2 ? true : false
+        ).rate-button__input
+        input(
+            type = 'radio',
+            name = rateButtonName,
+            value = 1,
+            checked = rateButtonValue === 1 ? true : false
+        ).rate-button__input

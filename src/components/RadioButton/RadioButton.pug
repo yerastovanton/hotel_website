@@ -1,0 +1,8 @@
+mixin radioButtonMixin(radioButtonTitle = 'Мужчина', radioButtonName = 'radioButtonName', radioButtonIsChecked = true)
+    label.text.text_body.radio-button__label= radioButtonTitle
+        input(
+            type = 'radio',
+            name = radioButtonName,
+            value = radioButtonTitle,
+            checked = radioButtonIsChecked || false
+        ).radio-button__input

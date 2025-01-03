@@ -1,0 +1,49 @@
+@use '@styles/theme.module.scss';
+
+.radio-button {
+  $height: 1.429em;
+
+  &__label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+    column-gap: $height * 0.55;
+  };
+
+  &__input {
+    appearance: none;
+    box-sizing: border-box;
+    order: -1;
+    width: $height;
+    height: $height;
+    border-style: solid;
+    border-width: $height * 0.05;
+    border-color: theme.$border-default-color;
+    border-radius: 50%;
+    outline: none;
+    position: relative;
+    transition: background 0.1s ease-in-out;
+
+    &:checked {
+      border-color: theme.$border-checked-color;
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        height: $height * 0.6;
+        width: $height * 0.6;
+        border-radius: 50%;
+        background: linear-gradient(theme.$primary-gradient-color-1, theme.$primary-gradient-color-2);
+      };
+    };
+
+    &:hover,
+    &:focus-visible {
+      border-color: theme.$border-hovered-and-focused-color;
+    };
+  };
+};

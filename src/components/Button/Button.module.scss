@@ -1,0 +1,50 @@
+@use '@styles/theme.module.scss';
+@use '@components/Text/Text.module.scss';
+
+.button {
+  $height: 3.143em;
+
+  box-sizing: content-box;
+  height: $height;
+  border-style: none;
+  border-width: $height * 0.05;
+  border-radius: $height * 0.5;
+  padding-left: $height * 0.409;
+  padding-right: $height * 0.409;
+  background-color: theme.$primary-gradient-color-1;
+  cursor: pointer;
+  transition: background 0.1s ease-in-out;
+
+  @extend %text-shared_h3;
+  
+
+  &_primary {
+
+    &_withArrow {
+
+    }
+  }
+
+  &_secondary {
+
+  }
+
+  &_tertiary {
+
+  }
+
+  &_pagination {
+
+    &_firstElement {
+
+    }
+
+    &_lastElement {
+
+    }
+  }
+
+  &_arrow {
+
+  };
+};

@@ -1,0 +1,21 @@
+$dark-shade-100: oklch(26.13% 0.0609 279.99/ 100);
+$dark-shade-75: oklch(26.13% 0.0609 279.99 / 75%);
+$dark-shade-50: oklch(26.13% 0.0609 279.99 / 50%);
+$dark-shade-25: oklch(26.13% 0.0609 279.99 / 25%);
+$dark-shade-10: oklch(26.13% 0.0609 279.99 / 10%);
+$dark-shade-5: oklch(26.13% 0.0609 279.99 / 5%);
+$purple-1: oklch(75.97% 0.1418 297.82);
+$purple-2: oklch(73.44% 0.1268 270.59);
+$green: oklch(78.05% 0.1226 156.45);
+$blue: oklch(80.9% 0.1044 214.33);
+$white: oklch(100% 0 0);
+
+// $width: 100svw;
+$width: width;
+
+$breakpoint-xxl: 1440px;
+$breakpoint-xl: 1200px;
+$breakpoint-l: 992px;
+$breakpoint-m: 768px;
+$breakpoint-s: 576px;
+$breakpoint-xs: 360px;

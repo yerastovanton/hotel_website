@@ -1,0 +1,220 @@
+@use '@styles/vars.module.scss';
+@use '@styles/theme.module.scss';
+
+
+$h1-font-lh: 1.22;
+$h2-font-lh: 1.22;
+$h3-font-lh: 1.22;
+$body-font-lh: 1.72;
+
+$h1-font-size-xxl: 1.5rem;
+$h1-font-size-xl: 1.5rem;
+$h1-font-size-l: 24px;
+$h1-font-size-m: 24px;
+$h1-font-size-s: 24px;
+$h1-font-size-xs: 24px;
+$h1-font-size-xxs: 24px;
+
+$h2-font-size-xxl: 1.1875rem;
+$h2-font-size-xl: 1.1875rem;
+$h2-font-size-l: 24px;
+$h2-font-size-m: 24px;
+$h2-font-size-s: 24px;
+$h2-font-size-xs: 24px;
+$h2-font-size-xxs: 24px;
+
+$h3-font-size-xxl: 0.75rem;
+$h3-font-size-xl: 0.75rem;
+$h3-font-size-l: 24px;
+$h3-font-size-m: 24px;
+$h3-font-size-s: 24px;
+$h3-font-size-xs: 24px;
+$h3-font-size-xxs: 24px;
+
+$body-font-size-xxl: 0.875rem;
+$body-font-size-xl: 0.875rem;
+$body-font-size-l: 24px;
+$body-font-size-m: 24px;
+$body-font-size-s: 24px;
+$body-font-size-xs: 24px;
+$body-font-size-xxs: 24px;
+
+$like-button-font-size-xxl: 0.7143rem;
+$like-button-font-size-xl: 0.7143rem;
+$like-button-font-size-l: 24px;
+$like-button-font-size-m: 24px;
+$like-button-font-size-s: 24px;
+$like-button-font-size-xs: 24px;
+$like-button-font-size-xxs: 24px;
+
+$font-weight-700: 700;
+$font-weight-400: 400;
+
+$text-transform_uppercase-none: none;
+$text-transform_uppercase: uppercase;
+
+@mixin font-mixin(
+  $font-weight,
+  $color,
+  $is_text-transform,
+  $font-size-xxl,
+  $font-size-xl,
+  $font-size-l,
+  $font-size-m,
+  $font-size-s,
+  $font-size-xs,
+  $font-size-xxs
+) {
+  font-weight: $font-weight;
+  color: $color;
+  text-transform: $is_text-transform;
+
+  /* font-size depending on screenwidth */
+  @media (vars.$width >= vars.$breakpoint-xxl) {
+    font-size: $font-size-xxl;
+  }
+  @media (vars.$breakpoint-xl <= vars.$width < vars.$breakpoint-xxl) {
+    font-size: $font-size-xl;
+  }
+  @media (vars.$breakpoint-l <= vars.$width < vars.$breakpoint-xl) {
+    font-size: $font-size-l;
+  }
+  @media (vars.$breakpoint-m <= vars.$width < vars.$breakpoint-l) {
+    font-size: $font-size-m;
+  }
+  @media (vars.$breakpoint-s <= vars.$width < vars.$breakpoint-m) {
+    font-size: $font-size-s;
+  }
+  @media (vars.$breakpoint-xs <= vars.$width < vars.$breakpoint-s) {
+    font-size: $font-size-xs;
+  }
+  @media (vars.$width < vars.$breakpoint-xs) {
+    font-size: $font-size-xxs;
+  }
+}
+
+%text-shared {
+  box-sizing: border-box;
+  justify-content: start;
+  width: 100%;
+  height: 100%;
+
+  &_h1 {
+    @include font-mixin(
+      $font-weight-700,
+      theme.$font-color-100,
+      $text-transform_uppercase-none,
+      $h1-font-size-xxl,
+      $h1-font-size-xl,
+      $h1-font-size-l,
+      $h1-font-size-m,
+      $h1-font-size-s,
+      $h1-font-size-xs,
+      $h1-font-size-xxs
+    );
+
+    &_regular {
+      font-weight: $font-weight-400;
+    }
+  }
+
+  &_h2 {
+    @include font-mixin(
+      $font-weight-700,
+      theme.$font-color-100,
+      $text-transform_uppercase-none,
+      $h2-font-size-xxl,
+      $h2-font-size-xl,
+      $h2-font-size-l,
+      $h2-font-size-m,
+      $h2-font-size-s,
+      $h2-font-size-xs,
+      $h2-font-size-xxs
+    );
+
+    &_regular {
+      font-weight: $font-weight-400;
+    }
+  }
+
+  &_h3 {
+    @include font-mixin(
+      $font-weight-700,
+      theme.$font-color-100,
+      $text-transform_uppercase,
+      $h3-font-size-xxl,
+      $h3-font-size-xl,
+      $h3-font-size-l,
+      $h3-font-size-m,
+      $h3-font-size-s,
+      $h3-font-size-xs,
+      $h3-font-size-xxs
+    );
+
+    &_regular {
+      font-weight: $font-weight-400;
+    }
+  }
+
+  &_body {
+    @include font-mixin(
+      $font-weight-400,
+      theme.$font-color-75,
+      $text-transform_uppercase-none,
+      $body-font-size-xxl,
+      $body-font-size-xl,
+      $body-font-size-l,
+      $body-font-size-m,
+      $body-font-size-s,
+      $body-font-size-xs,
+      $body-font-size-xxs
+    );
+  }
+
+  &_like-button {
+    @include font-mixin(
+      $font-weight-400,
+      theme.$font-color-25,
+      $text-transform_uppercase-none,
+      $like-button-font-size-xxl,
+      $like-button-font-size-xl,
+      $like-button-font-size-l,
+      $like-button-font-size-m,
+      $like-button-font-size-s,
+      $like-button-font-size-xs,
+      $like-button-font-size-xxs
+    );
+
+    &_primary-color {
+      color: theme.$primary-color,
+    }
+  }
+}
+
+.text {
+  @extend %text-shared;
+
+  &_h1 {
+    @extend %text-shared_h1;
+  }
+  &_h2 {
+    @extend %text-shared_h2;
+  }
+  &_h3 {
+    @extend %text-shared_h3;
+  }
+  &_body {
+    @extend %text-shared_body;
+  }
+  &_like-button {
+    @extend %text-shared_like-button;
+  }
+}
+
+.legend {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+

@@ -1,0 +1,9 @@
+mixin likeButtonMixin(likeButtonName = 'likeButtonName', likeButtonValue = 34, likeButtonIsChecked = false)
+    label.like-button__label
+        input(
+            type = 'checkbox',
+            name = likeButtonName,
+            checked = likeButtonIsChecked || false
+        ).like-button__input
+        span.text.text_like-button.like-button__counter= likeButtonValue
+    
