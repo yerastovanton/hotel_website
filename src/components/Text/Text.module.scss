@@ -102,7 +102,7 @@ $text-transform_uppercase: uppercase;
   &_h1 {
     @include font-mixin(
       $font-weight-700,
-      theme.$font-color-100,
+      theme.$font-color-dark-shade-100,
       $text-transform_uppercase-none,
       $h1-font-size-xxl,
       $h1-font-size-xl,
@@ -121,7 +121,7 @@ $text-transform_uppercase: uppercase;
   &_h2 {
     @include font-mixin(
       $font-weight-700,
-      theme.$font-color-100,
+      theme.$font-color-dark-shade-100,
       $text-transform_uppercase-none,
       $h2-font-size-xxl,
       $h2-font-size-xl,
@@ -140,7 +140,7 @@ $text-transform_uppercase: uppercase;
   &_h3 {
     @include font-mixin(
       $font-weight-700,
-      theme.$font-color-100,
+      theme.$font-color-dark-shade-100,
       $text-transform_uppercase,
       $h3-font-size-xxl,
       $h3-font-size-xl,
@@ -159,7 +159,7 @@ $text-transform_uppercase: uppercase;
   &_body {
     @include font-mixin(
       $font-weight-400,
-      theme.$font-color-75,
+      theme.$font-color-dark-shade-75,
       $text-transform_uppercase-none,
       $body-font-size-xxl,
       $body-font-size-xl,
@@ -174,7 +174,7 @@ $text-transform_uppercase: uppercase;
   &_like-button {
     @include font-mixin(
       $font-weight-400,
-      theme.$font-color-25,
+      theme.$font-color-dark-shade-25,
       $text-transform_uppercase-none,
       $like-button-font-size-xxl,
       $like-button-font-size-xl,
@@ -186,7 +186,7 @@ $text-transform_uppercase: uppercase;
     );
 
     &_primary-color {
-      color: theme.$primary-color,
+      color: theme.$font-color-purple,
     }
   }
 }

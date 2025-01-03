@@ -49,13 +49,13 @@
 
     &::placeholder {
       @extend %text-shared_body;
-      color: theme.$font-color-25;
+      color: theme.$font-color-dark-shade-25;
     }
 
     &:hover,
     &:focus-visible {
       &::placeholder {
-        color: theme.$font-color-75;
+        color: theme.$font-color-dark-shade-75;
       }
     }
   }

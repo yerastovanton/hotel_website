@@ -2,7 +2,7 @@
 @use '@components/Text/Text.module.scss';
 
 .button {
-  $height: 3.143em;
+  $height: 3.667em;
 
   box-sizing: content-box;
   height: $height;
@@ -11,14 +11,20 @@
   border-radius: $height * 0.5;
   padding-left: $height * 0.409;
   padding-right: $height * 0.409;
-  background-color: theme.$primary-gradient-color-1;
+  background: linear-gradient(theme.$primary-gradient-color-1, theme.$primary-gradient-color-2);
   cursor: pointer;
   transition: background 0.1s ease-in-out;
 
   @extend %text-shared_h3;
-  
 
   &_primary {
+    color: theme.$font-color-white;
+    
+    &:hover,
+    &:focus-visible,
+    &:checked {
+      opacity: 0.5;
+    };
 
     &_withArrow {
 
