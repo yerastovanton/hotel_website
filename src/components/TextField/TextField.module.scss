@@ -2,6 +2,7 @@
 @use "@components/Text/Text.module.scss";
 
 .text-field {
+  $height: 3.143em;
   box-sizing: border-box;
 
   &__title-with-subtitle {
@@ -23,7 +24,6 @@
   }
 
   &__label {
-    $height: 3.143em;
     box-sizing: border-box;
     display: flex;
     align-items: center;

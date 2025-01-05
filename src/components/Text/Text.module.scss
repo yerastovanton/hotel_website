@@ -6,6 +6,7 @@ $h1-font-lh: 1.22;
 $h2-font-lh: 1.22;
 $h3-font-lh: 1.22;
 $body-font-lh: 1.72;
+$like-button-font-lh: 1.72;
 
 $h1-font-size-xxl: 1.5rem;
 $h1-font-size-xl: 1.5rem;
@@ -25,11 +26,11 @@ $h2-font-size-xxs: 24px;
 
 $h3-font-size-xxl: 0.75rem;
 $h3-font-size-xl: 0.75rem;
-$h3-font-size-l: 24px;
-$h3-font-size-m: 24px;
-$h3-font-size-s: 24px;
-$h3-font-size-xs: 24px;
-$h3-font-size-xxs: 24px;
+$h3-font-size-l: 0.75rem;
+$h3-font-size-m: 0.75rem;
+$h3-font-size-s: 0.75rem;
+$h3-font-size-xs: 0.75rem;
+$h3-font-size-xxs: 0.75rem;
 
 $body-font-size-xxl: 0.875rem;
 $body-font-size-xl: 0.875rem;
@@ -55,6 +56,7 @@ $text-transform_uppercase: uppercase;
 
 @mixin font-mixin(
   $font-weight,
+  $font-lh,
   $color,
   $is_text-transform,
   $font-size-xxl,
@@ -66,6 +68,7 @@ $text-transform_uppercase: uppercase;
   $font-size-xxs
 ) {
   font-weight: $font-weight;
+  line-height: $font-lh;
   color: $color;
   text-transform: $is_text-transform;
 
@@ -102,6 +105,7 @@ $text-transform_uppercase: uppercase;
   &_h1 {
     @include font-mixin(
       $font-weight-700,
+      $h1-font-lh,
       theme.$font-color-dark-shade-100,
       $text-transform_uppercase-none,
       $h1-font-size-xxl,
@@ -113,14 +117,15 @@ $text-transform_uppercase: uppercase;
       $h1-font-size-xxs
     );
 
-    &_regular {
-      font-weight: $font-weight-400;
-    }
+    // &_regular {
+    //   font-weight: $font-weight-400;
+    // }
   }
 
   &_h2 {
     @include font-mixin(
       $font-weight-700,
+      $h2-font-lh,
       theme.$font-color-dark-shade-100,
       $text-transform_uppercase-none,
       $h2-font-size-xxl,
@@ -132,14 +137,15 @@ $text-transform_uppercase: uppercase;
       $h2-font-size-xxs
     );
 
-    &_regular {
-      font-weight: $font-weight-400;
-    }
+    // &_regular {
+    //   font-weight: $font-weight-400;
+    // }
   }
 
   &_h3 {
     @include font-mixin(
       $font-weight-700,
+      $h3-font-lh,
       theme.$font-color-dark-shade-100,
       $text-transform_uppercase,
       $h3-font-size-xxl,
@@ -159,6 +165,7 @@ $text-transform_uppercase: uppercase;
   &_body {
     @include font-mixin(
       $font-weight-400,
+      $body-font-lh,
       theme.$font-color-dark-shade-75,
       $text-transform_uppercase-none,
       $body-font-size-xxl,
@@ -174,6 +181,7 @@ $text-transform_uppercase: uppercase;
   &_like-button {
     @include font-mixin(
       $font-weight-400,
+      $like-button-font-lh,
       theme.$font-color-dark-shade-25,
       $text-transform_uppercase-none,
       $like-button-font-size-xxl,
@@ -192,7 +200,7 @@ $text-transform_uppercase: uppercase;
 }
 
 .text {
-  @extend %text-shared;
+  // @extend %text-shared;
 
   &_h1 {
     @extend %text-shared_h1;
@@ -208,6 +216,41 @@ $text-transform_uppercase: uppercase;
   }
   &_like-button {
     @extend %text-shared_like-button;
+  }
+  &_button {
+
+    &_primary {
+      @extend %text-shared_h3;
+      color: theme.$font-color-white;
+
+      &_withArrow {
+        @extend %text-shared_h3;
+        color: theme.$font-color-white;
+      }
+    }
+    &_secondary {
+      @extend %text-shared_h3;
+      color: theme.$font-color-purple;
+    }
+    &_tertiary {
+      @extend %text-shared_h3;
+      color: theme.$font-color-purple;
+
+      &:hover,
+      &:focus-visible,
+      &:checked {
+        color: theme.$font-color-dark-shade-50;
+      }
+    }
+    &_pagination {
+      @extend %text-shared_h3_regular;
+      color: theme.$font-color-dark-shade-50;
+
+      &_currentPage {
+        @extend %text-shared_h3_regular;
+        color: theme.$font-color-dark-shade-50;
+      }
+    }
   }
 }
 

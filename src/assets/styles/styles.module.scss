@@ -1,7 +1,6 @@
 @use './normalize.module.scss';
 
 @use './vars.module.scss';
-@use './mixins.module.scss';
 @use './theme.module.scss';
 @use './fonts.module.scss';
 
@@ -15,7 +14,7 @@ html {
   font-style: normal;
   text-align: left;
   color: theme.$font-color-dark-shade-100;
-  font-size: 14px;
+  font-size: 16px;
 
   background-color: theme.$primary-bg-color;
 

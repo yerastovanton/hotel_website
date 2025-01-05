@@ -1,0 +1,57 @@
+@use '@style/theme.module.scss';
+@use 'components/mixins/arrow.module.scss' as *;
+
+.pagination {
+  $height: 2.5rem;
+
+  &__fieldset {
+    display: inline-flex;
+    box-sizing: content-box;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-basis: content;
+    row-gap: 0;
+    flex-wrap: nowrap;
+
+    &:last-child {
+
+    }
+  }
+
+  &__input {
+    display: block;
+    box-sizing: content-box;
+    height: $height;
+    border-radius: $height * 0.55;
+    
+    &_currentPage {
+      background: linear-gradient(theme.$primary-gradient-color-1, theme.$primary-gradient-color-2);
+    }
+  
+    &_previousLabel {
+      background: linear-gradient($secondary-gradient-color-1, $secondary-gradient-color-2);
+
+      &::after {
+        @include arrowMixin(
+          $height * 0.4,
+          $height * 0.4,
+          theme.$primary-bg-color
+        );
+      }
+    }
+  
+    &_nextLabel {
+      background: linear-gradient($secondary-gradient-color-1, $secondary-gradient-color-2);
+
+      &::after {
+        @include arrowMixin(
+          $height * 0.4,
+          $height * 0.4,
+          theme.$primary-bg-color
+        );
+        transform: rotate(0.5turn);
+      }
+    }
+  }
+}

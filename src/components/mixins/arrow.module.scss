@@ -1,0 +1,11 @@
+@mixin arrowMixin(
+  $height,
+  $width,
+  $background
+) {
+  box-sizing: border-box;
+  height: $height;
+  width: $width;
+  clip-path: polygon( 52.893% 5.785%,100% 52.893%,52.893% 100%,44.628% 91.736%,77.411% 58.678%,5.785% 58.678%,5.785% 47.107%,77.411% 47.107%,44.628% 14.05%,52.893% 5.785% );
+  background: $background;
+};

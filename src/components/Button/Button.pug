@@ -2,12 +2,12 @@ mixin buttonMixin(props = {})
     -
         const {
         buttonName = 'buttonName',
-        buttonTheme = 'primary',
+        buttonTheme = 'primary_withArrow',
         buttonText = 'Click me', 
         buttonUrl = 'https://example.com'
         } = props
 
-        const buttonClasses = `button_${buttonTheme}`
+        const buttonClasses = `text_button_${buttonTheme} button_${buttonTheme}`
         const buttonEvent = `window.location.href='${buttonUrl}';`
 
     button.button(

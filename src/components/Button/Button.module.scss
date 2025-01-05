@@ -1,56 +1,88 @@
 @use '@styles/theme.module.scss';
-@use '@components/Text/Text.module.scss';
+@use '@components/mixins/arrow.module.scss' as *;
 
 .button {
   $height: 3.667em;
 
+  display: inline-block;
   box-sizing: content-box;
   height: $height;
   border-style: none;
-  border-width: $height * 0.05;
   border-radius: $height * 0.5;
+  padding-top: 0;
+  padding-bottom: 0;
   padding-left: $height * 0.409;
   padding-right: $height * 0.409;
   background: linear-gradient(theme.$primary-gradient-color-1, theme.$primary-gradient-color-2);
+  outline: none;
   cursor: pointer;
+  position: relative;
   transition: background 0.1s ease-in-out;
 
-  @extend %text-shared_h3;
-
   &_primary {
-    color: theme.$font-color-white;
-    
+       
+    &_withArrow {
+      width: 100%;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: $height * 0.6818;
+        transform: translate(50%, -50%);
+
+        @include arrowMixin(
+          $height * 0.3636,
+          $height * 0.3636,
+          theme.$primary-bg-color
+        );
+      };
+
+      &:hover,
+      &:focus-visible,
+      &:checked {
+        opacity: 0.5;
+      };
+    };
+
     &:hover,
     &:focus-visible,
     &:checked {
       opacity: 0.5;
     };
-
-    &_withArrow {
-
-    }
   }
 
   &_secondary {
+    background: theme.$primary-bg-color;
+    height: $height - ($height * 0.045 * 2);
+    margin: $height * 0.045;
 
+    &::after {
+      content: '';
+      position: absolute;
+      top: -$height * 0.045;
+      left: -$height * 0.045;
+      right: -$height * 0.045;
+      bottom: -$height * 0.045;
+      z-index: -1;
+      height: $height;
+      border-radius: $height * 0.5;
+      background: linear-gradient(theme.$primary-gradient-color-1, theme.$primary-gradient-color-2);
+    };
+
+    &:hover,
+    &:focus-visible,
+    &:checked {
+      &::after {
+        opacity: 0.5;
+      }
+    };
   }
 
   &_tertiary {
-
+    background: none;
+    height: $height * 0.341;
+    padding-left: 0;
+    padding-right: 0;
   }
-
-  &_pagination {
-
-    &_firstElement {
-
-    }
-
-    &_lastElement {
-
-    }
-  }
-
-  &_arrow {
-
-  };
 };
