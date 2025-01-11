@@ -1,5 +1,5 @@
-@use '@style/theme.module.scss';
-@use 'components/mixins/arrow.module.scss' as *;
+@use '@styles/theme.module.scss';
+@use '@components/mixins/arrow.module.scss' as *;
 
 .pagination {
   $height: 2.5rem;
@@ -15,22 +15,27 @@
     flex-wrap: nowrap;
 
     &:last-child {
-
+      margin-left: auto;
+      flex-basis: 100%;
     }
   }
 
-  &__input {
+  &__button {
     display: block;
     box-sizing: content-box;
     height: $height;
     border-radius: $height * 0.55;
     
-    &_currentPage {
+    &_selectedPage {
+      background: linear-gradient(theme.$primary-gradient-color-1, theme.$primary-gradient-color-2);
+    }
+
+    &_dash {
       background: linear-gradient(theme.$primary-gradient-color-1, theme.$primary-gradient-color-2);
     }
   
-    &_previousLabel {
-      background: linear-gradient($secondary-gradient-color-1, $secondary-gradient-color-2);
+    &_previousPage {
+      background: linear-gradient(theme.$secondary-gradient-color-1, theme.$secondary-gradient-color-2);
 
       &::after {
         @include arrowMixin(
@@ -41,8 +46,8 @@
       }
     }
   
-    &_nextLabel {
-      background: linear-gradient($secondary-gradient-color-1, $secondary-gradient-color-2);
+    &_nextPage {
+      background: linear-gradient(theme.$secondary-gradient-color-1, theme.$secondary-gradient-color-2);
 
       &::after {
         @include arrowMixin(

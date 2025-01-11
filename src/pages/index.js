@@ -1,6 +1,6 @@
-import * as c from './website/temple/temple.js';
-import * as d from './website/temple2/temple2.js';
-
 import '@styles/styles.module.scss';
+import '@components/index.module.scss';
 
-console.log(c, d);
+import { pagination } from '@components/index.js';
+
+pagination.init();
