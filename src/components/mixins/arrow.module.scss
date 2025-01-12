@@ -1,11 +1,16 @@
 @mixin arrowMixin(
   $height,
   $width,
-  $background
+  $background,
+  $rotate: nonrotate
 ) {
   box-sizing: border-box;
   height: $height;
   width: $width;
+  left: 50%;
+  top: 50%;
   clip-path: polygon( 52.893% 5.785%,100% 52.893%,52.893% 100%,44.628% 91.736%,77.411% 58.678%,5.785% 58.678%,5.785% 47.107%,77.411% 47.107%,44.628% 14.05%,52.893% 5.785% );
   background: $background;
+  @if $rotate == rotate {transform: translate(-50%, -50%) rotate(0.5turn)};
+  @if $rotate == nonrotate {transform: translate(-50%, -50%)};
 };

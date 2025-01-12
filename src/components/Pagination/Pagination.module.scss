@@ -13,6 +13,7 @@
     flex-basis: content;
     row-gap: 0;
     flex-wrap: nowrap;
+    outline: none;
 
     &:last-child {
       margin-left: auto;
@@ -24,24 +25,33 @@
     display: block;
     box-sizing: content-box;
     height: $height;
+    width: clamp($height, $height, $height);
+    border: none;
     border-radius: $height * 0.55;
+    background: none;
+    outline: none;
+    cursor: pointer;
+    position: relative;
     
     &_selectedPage {
       background: linear-gradient(theme.$primary-gradient-color-1, theme.$primary-gradient-color-2);
     }
 
     &_dash {
-      background: linear-gradient(theme.$primary-gradient-color-1, theme.$primary-gradient-color-2);
+      cursor: default;
     }
   
     &_previousPage {
       background: linear-gradient(theme.$secondary-gradient-color-1, theme.$secondary-gradient-color-2);
 
       &::after {
+        content: '';
+        position: absolute;
         @include arrowMixin(
           $height * 0.4,
           $height * 0.4,
-          theme.$primary-bg-color
+          theme.$primary-bg-color,
+          rotate
         );
       }
     }
@@ -50,12 +60,13 @@
       background: linear-gradient(theme.$secondary-gradient-color-1, theme.$secondary-gradient-color-2);
 
       &::after {
+        content: '';
+        position: absolute;
         @include arrowMixin(
           $height * 0.4,
           $height * 0.4,
           theme.$primary-bg-color
         );
-        transform: rotate(0.5turn);
       }
     }
   }

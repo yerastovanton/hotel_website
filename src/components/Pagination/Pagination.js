@@ -3,73 +3,73 @@ import data from '@data/pagination.json';
 class Pagination {
 
     constructor(totalNumberOfPages, currentPage) {
+        this.firstNumberOfPages = 1;
         this.totalNumberOfPages = +totalNumberOfPages;
         this.currentPage = +currentPage;
     }
 
     init() {
-        this.render(this.totalNumberOfPages, this.currentPage);
+        this.render(this.firstNumberOfPages, this.totalNumberOfPages, this.currentPage);
     }
 
-    render(totalNumberOfPages, currentPage) {
-        const renderSetting = {
-            parentContainer: document.querySelector('fieldset.pagination__fieldset'),
-            firstNumberOfPages: 1,
-            totalNumberOfPages: totalNumberOfPages,
-            currentPage: currentPage,
-            arrayOfElements: {
-                previousPageButton: currentPage > this.firstNumberOfPages,
-                firstPageButton: currentPage > this.firstNumberOfPages ? this.firstNumberOfPages : false,
-                firstDash: (currentPage - 3) > this.firstNumberOfPages,
-                arrayOfClosestPages: [
-                    (currentPage - 2) > this.firstNumberOfPages ? currentPage - 2 : false,
-                    (currentPage - 1) > this.firstNumberOfPages ? currentPage - 1 : false,
-                    currentPage, 
-                    (currentPage + 1) < this.totalNumberOfPages ? currentPage + 1 : false,
-                    (currentPage + 2) < this.totalNumberOfPages ? currentPage + 2 : false,
-                ],
-                secondDash: (currentPage + 3) < totalNumberOfPages,
-                lastPageButton: currentPage < this.totalNumberOfPages ? this.totalNumberOfPages : false,
-                nextPageButton: currentPage < this.totalNumberOfPages 
-            }
+    render(firstNumberOfPages, totalNumberOfPages, currentPage) {
+
+        const renderSetting = {  
+            previousPageButton: currentPage > firstNumberOfPages,
+            firstPageButton: currentPage > firstNumberOfPages ? firstNumberOfPages : false,
+            firstDash: (currentPage - 3) > firstNumberOfPages,
+            arrayOfClosestPages: [
+                (currentPage - 2) > firstNumberOfPages ? currentPage - 2 : false,
+                (currentPage - 1) > firstNumberOfPages ? currentPage - 1 : false,
+                currentPage, 
+                (currentPage + 1) < totalNumberOfPages ? currentPage + 1 : false,
+                (currentPage + 2) < totalNumberOfPages ? currentPage + 2 : false,
+            ],
+            secondDash: (currentPage + 3) < totalNumberOfPages,
+            lastPageButton: currentPage < totalNumberOfPages ? totalNumberOfPages : false,
+            nextPageButton: currentPage < totalNumberOfPages
         };
 
         const createFragmentArrayOfElements = (setting) => {
             const fragment = document.createDocumentFragment();
 
-            const createElement = (elementType, elementSetting) => {
-                let className = 'pagination__button';
-                if (elementType === 'previousPageButton') className = `${className}_previousPage`;
-                if (elementType === 'nextPageButton') className = `${className}_nextPage`;
-                if (elementType === 'firstDash' || elementType === 'secondDash') className = `${className}_dash`;
-                
-                if (elementSetting !== false) {
+            const createElement = (elementType, elementContent) => {
+                if (elementContent !== false) {
                     const newElement = document.createElement('button');
-                    const textContent = typeof(elementSetting) === 'number' ? elementSetting : elementType;
+                    const className = 'pagination__button';
                     newElement.classList.add(`${className}`);
+                    if (elementType === 'previousPageButton') newElement.classList.add(`${className}_previousPage`);
+                    if (elementType === 'nextPageButton') newElement.classList.add(`${className}_nextPage`);
+                    if (elementType === 'firstDash' || elementType === 'secondDash') newElement.classList.add(`${className}_dash`);
+                    let textContent = '';
+                    if (typeof(elementContent) === 'number') textContent = elementContent;
+                    if (elementType === 'firstDash' || elementType === 'secondDash') textContent = '...';
                     newElement.textContent = `${textContent}`;
 
                     return fragment.appendChild(newElement);
                 };
             };
 
-            for (const key in setting.arrayOfElements) {
-                if ((Array.isArray(setting.arrayOfElements[key]) === false) &
-                    (setting.arrayOfElements.hasOwnProperty(key))) {
-                    createElement(key, setting.arrayOfElements[key]);
+            for (const key in setting) {
+                if ((Array.isArray(setting[key]) === false) &
+                    (setting.hasOwnProperty(key))) {
+                    createElement(key, setting[key]);
                 };
-                if (Array.isArray(setting.arrayOfElements[key])) {
-                    setting.arrayOfElements[key].forEach((item) => createElement(key, item));
+                if (Array.isArray(setting[key])) {
+                    setting[key].forEach((value) => createElement(key, value));
                 };
             };
 
             return fragment;
         };
 
-        renderSetting.parentContainer.textContent = '';
+        const parentContainer = document.querySelector('fieldset.pagination__fieldset');
+        parentContainer.textContent = '';
         const fragment = createFragmentArrayOfElements(renderSetting);
-        renderSetting.parentContainer.appendChild(fragment);
+        parentContainer.appendChild(fragment);
     };
+
+    resizeWidthButton() {}
 
     click() {
 
