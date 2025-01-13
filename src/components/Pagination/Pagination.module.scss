@@ -25,15 +25,16 @@
     display: block;
     box-sizing: content-box;
     height: $height;
-    width: clamp($height, $height, $height);
+    width: $height;
     border: none;
     border-radius: $height * 0.55;
+    padding: 0;
     background: none;
     outline: none;
     cursor: pointer;
     position: relative;
     
-    &_selectedPage {
+    &_currentPage {
       background: linear-gradient(theme.$primary-gradient-color-1, theme.$primary-gradient-color-2);
     }
 
@@ -48,10 +49,12 @@
         content: '';
         position: absolute;
         @include arrowMixin(
-          $height * 0.4,
-          $height * 0.4,
-          theme.$primary-bg-color,
-          rotate
+          $height: $height * 0.4,
+          $width: $height * 0.4,
+          $background: theme.$primary-bg-color,
+          $rotate: true,
+          $right: 50%,
+          $top: 50%
         );
       }
     }
@@ -63,9 +66,12 @@
         content: '';
         position: absolute;
         @include arrowMixin(
-          $height * 0.4,
-          $height * 0.4,
-          theme.$primary-bg-color
+          $height: $height * 0.4,
+          $width: $height * 0.4,
+          $background: theme.$primary-bg-color,
+          $rotate: false,
+          $right: 50%,
+          $top: 50%
         );
       }
     }

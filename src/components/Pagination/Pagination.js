@@ -41,35 +41,65 @@ class Pagination {
                     if (elementType === 'previousPageButton') newElement.classList.add(`${className}_previousPage`);
                     if (elementType === 'nextPageButton') newElement.classList.add(`${className}_nextPage`);
                     if (elementType === 'firstDash' || elementType === 'secondDash') newElement.classList.add(`${className}_dash`);
+                    if (elementType === 'arrayOfClosestPages' & elementContent === currentPage) newElement.classList.add(`${className}_currentPage`);
                     let textContent = '';
                     if (typeof(elementContent) === 'number') textContent = elementContent;
-                    if (elementType === 'firstDash' || elementType === 'secondDash') textContent = '...';
+                    if (elementType === 'firstDash' || elementType === 'secondDash') textContent = '\u002E\u002E\u002E';
                     newElement.textContent = `${textContent}`;
+
+                    console.log(newElement);
 
                     return fragment.appendChild(newElement);
                 };
             };
 
             for (const key in setting) {
-                if ((Array.isArray(setting[key]) === false) &
-                    (setting.hasOwnProperty(key))) {
-                    createElement(key, setting[key]);
-                };
-                if (Array.isArray(setting[key])) {
-                    setting[key].forEach((value) => createElement(key, value));
+                if (setting.hasOwnProperty(key)) {
+                    if (Array.isArray(setting[key]) === false) {
+                        createElement(key, setting[key]);
+                    };
+                    if (Array.isArray(setting[key])) {
+                        setting[key].forEach((value) => createElement(key, value));
+                    };
                 };
             };
 
             return fragment;
         };
 
+        const resizeWidthButton = () => {
+            const element = document.querySelectorAll(
+                '.pagination__button:not([class*=" "]), .pagination__button_currentPage'
+            );
+            element.forEach((item) => {
+                const getWidthTextFromCanvas = (element) => {
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    context.font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
+                    const text = element.textContent;
+                    const textWidth = context.measureText(text).width;
+    
+                    return textWidth;
+                };
+    
+                const computedStyle = getComputedStyle(item);
+                const height = computedStyle.height.replace('px', '');
+                const margin = 0.8 * height;
+                const textWidth = getWidthTextFromCanvas(item);
+                
+                item.style.width = `${textWidth + margin}px`;
+            });
+        };
+
         const parentContainer = document.querySelector('fieldset.pagination__fieldset');
         parentContainer.textContent = '';
         const fragment = createFragmentArrayOfElements(renderSetting);
         parentContainer.appendChild(fragment);
-    };
+        
+        resizeWidthButton();
 
-    resizeWidthButton() {}
+        return parentContainer;
+    };
 
     click() {
 

@@ -1,6 +1,6 @@
 {
     "pagination": {
-        "totalNumberOfPages": 10,
+        "totalNumberOfPages": 1000,
         "currentPage": 3
     }
 }

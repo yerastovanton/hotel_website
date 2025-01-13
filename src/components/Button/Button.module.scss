@@ -27,14 +27,13 @@
       &::after {
         content: '';
         position: absolute;
-        top: 50%;
-        right: $height * 0.6818;
-        transform: translate(50%, -50%);
-
         @include arrowMixin(
-          $height * 0.3636,
-          $height * 0.3636,
-          theme.$primary-bg-color
+          $height: $height * 0.3636,
+          $width: $height * 0.3636,
+          $background: theme.$primary-bg-color,
+          $rotate: false,
+          $right: $height * 0.6818,
+          $top: 50%
         );
       };
 
