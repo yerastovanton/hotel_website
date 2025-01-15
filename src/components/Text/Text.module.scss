@@ -248,7 +248,7 @@ $text-transform_uppercase: uppercase;
 
       &_currentPage {
         @extend %text-shared_h3_regular;
-        color: theme.$font-color-dark-shade-50;
+        color: theme.$font-color-white;
       }
     }
   }

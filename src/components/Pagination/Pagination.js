@@ -36,12 +36,16 @@ class Pagination {
             const createElement = (elementType, elementContent) => {
                 if (elementContent !== false) {
                     const newElement = document.createElement('button');
+                    
                     const className = 'pagination__button';
                     newElement.classList.add(`${className}`);
                     if (elementType === 'previousPageButton') newElement.classList.add(`${className}_previousPage`);
                     if (elementType === 'nextPageButton') newElement.classList.add(`${className}_nextPage`);
                     if (elementType === 'firstDash' || elementType === 'secondDash') newElement.classList.add(`${className}_dash`);
-                    if (elementType === 'arrayOfClosestPages' & elementContent === currentPage) newElement.classList.add(`${className}_currentPage`);
+                    if (elementType === 'arrayOfClosestPages' && elementContent === currentPage) newElement.classList.add(`${className}_currentPage`);
+                    newElement.classList.add('text_button_pagination');
+                    if (elementType === 'arrayOfClosestPages' && elementContent === currentPage) newElement.classList.add('text_button_pagination_currentPage');
+                    
                     let textContent = '';
                     if (typeof(elementContent) === 'number') textContent = elementContent;
                     if (elementType === 'firstDash' || elementType === 'secondDash') textContent = '\u002E\u002E\u002E';
@@ -66,26 +70,26 @@ class Pagination {
         };
 
         const renderResizeWidthElements = () => {
-            const element = document.querySelectorAll(
-                '.pagination__button:not([class*=" "]), .pagination__button_currentPage'
-            );
+            const element = document.querySelectorAll('.pagination__button');
             element.forEach((item) => {
-                const getWidthTextFromCanvas = (element) => {
-                    const canvas = document.createElement('canvas');
-                    const context = canvas.getContext('2d');
-                    context.font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
-                    const text = element.textContent;
-                    const textWidth = context.measureText(text).width;
-    
-                    return textWidth;
+                if (item.textContent.trim() !== '') {
+                    const getWidthTextFromCanvas = (element) => {
+                        const canvas = document.createElement('canvas');
+                        const context = canvas.getContext('2d');
+                        context.font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
+                        const text = element.textContent;
+                        const textWidth = context.measureText(text).width;
+        
+                        return textWidth;
+                    };
+        
+                    const computedStyle = getComputedStyle(item);
+                    const height = computedStyle.height.replace('px', '');
+                    const margin = 0.8 * height;
+                    const textWidth = getWidthTextFromCanvas(item);
+                    
+                    item.style.width = `${textWidth + margin}px`;
                 };
-    
-                const computedStyle = getComputedStyle(item);
-                const height = computedStyle.height.replace('px', '');
-                const margin = 0.8 * height;
-                const textWidth = getWidthTextFromCanvas(item);
-                
-                item.style.width = `${textWidth + margin}px`;
             });
         };
 
@@ -99,11 +103,12 @@ class Pagination {
 
     click(event) {
         const classes = event.target.classList;
+        const textContent = event.target.textContent;
         if (classes.contains('pagination__button')) {
             if (classes.contains('pagination__button_previousPage')) return this.render(this.firstNumberOfPages, this.totalNumberOfPages, --this.currentPage);
             if (classes.contains('pagination__button_nextPage')) return this.render(this.firstNumberOfPages, this.totalNumberOfPages, ++this.currentPage);
-            if (classes.length === 1) {
-                this.currentPage = +event.target.textContent;
+            if (textContent.trim() !== '' && textContent != '\u002E\u002E\u002E') {
+                this.currentPage = +textContent;
                 return this.render(this.firstNumberOfPages, this.totalNumberOfPages, this.currentPage);
             };
         };

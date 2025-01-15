@@ -18,8 +18,8 @@
     &:last-child {
       margin-left: auto;
       flex-basis: 100%;
-    }
-  }
+    };
+  };
 
   &__button {
     display: block;
@@ -36,11 +36,11 @@
     
     &_currentPage {
       background: linear-gradient(theme.$primary-gradient-color-1, theme.$primary-gradient-color-2);
-    }
+    };
 
     &_dash {
       cursor: default;
-    }
+    };
   
     &_previousPage {
       background: linear-gradient(theme.$secondary-gradient-color-1, theme.$secondary-gradient-color-2);
@@ -56,8 +56,8 @@
           $right: 50%,
           $top: 50%
         );
-      }
-    }
+      };
+    };
   
     &_nextPage {
       background: linear-gradient(theme.$secondary-gradient-color-1, theme.$secondary-gradient-color-2);
@@ -73,7 +73,11 @@
           $right: 50%,
           $top: 50%
         );
-      }
-    }
+      };
+    };
+  };
+
+  &__label {
+    
   }
-}
+};

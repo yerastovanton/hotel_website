@@ -8,7 +8,7 @@ const init = () => {
 };
 
 document.body.addEventListener('click', (event) => {
-    if (event.target.closest('.pagination__button')) pagination.click(event);
+    if (event.target.closest('.pagination__fieldset')) pagination.click(event);
 });
 
 init();
