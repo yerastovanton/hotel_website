@@ -3,14 +3,14 @@ import data from '@data/pagination.json';
 class Pagination {
 
     constructor(totalNumberOfPages, currentPage) {
-        this.firstNumberOfPages = 1;
-        this.totalNumberOfPages = +totalNumberOfPages;
-        this.currentPage = +currentPage;
-    }
+        this._firstNumberOfPages = 1;
+        this._totalNumberOfPages = +totalNumberOfPages;
+        this._currentPage = +currentPage;
+    };
 
     init() {
         this.render(this.firstNumberOfPages, this.totalNumberOfPages, this.currentPage);
-    }
+    };
 
     render(firstNumberOfPages, totalNumberOfPages, currentPage) {
 
@@ -47,8 +47,6 @@ class Pagination {
                     if (elementType === 'firstDash' || elementType === 'secondDash') textContent = '\u002E\u002E\u002E';
                     newElement.textContent = `${textContent}`;
 
-                    console.log(newElement);
-
                     return fragment.appendChild(newElement);
                 };
             };
@@ -67,7 +65,7 @@ class Pagination {
             return fragment;
         };
 
-        const resizeWidthButton = () => {
+        const renderResizeWidthElements = () => {
             const element = document.querySelectorAll(
                 '.pagination__button:not([class*=" "]), .pagination__button_currentPage'
             );
@@ -95,15 +93,37 @@ class Pagination {
         parentContainer.textContent = '';
         const fragment = createFragmentArrayOfElements(renderSetting);
         parentContainer.appendChild(fragment);
-        
-        resizeWidthButton();
 
-        return parentContainer;
+        return renderResizeWidthElements();
     };
 
-    click() {
+    click(event) {
+        const classes = event.target.classList;
+        if (classes.contains('pagination__button')) {
+            if (classes.contains('pagination__button_previousPage')) return this.render(this.firstNumberOfPages, this.totalNumberOfPages, --this.currentPage);
+            if (classes.contains('pagination__button_nextPage')) return this.render(this.firstNumberOfPages, this.totalNumberOfPages, ++this.currentPage);
+            if (classes.length === 1) {
+                this.currentPage = +event.target.textContent;
+                return this.render(this.firstNumberOfPages, this.totalNumberOfPages, this.currentPage);
+            };
+        };
+    };
 
-    }
+    get firstNumberOfPages() {
+        return this._firstNumberOfPages;
+    };
+
+    get totalNumberOfPages() {
+        return this._totalNumberOfPages;
+    };
+
+    get currentPage() {
+        return this._currentPage;
+    };
+
+    set currentPage(currentPage) {
+        return this._currentPage = currentPage;
+    };
 };
 
-export let pagination = new Pagination(data.pagination.totalNumberOfPages, data.pagination.currentPage);
+export const pagination = new Pagination(data.pagination.totalNumberOfPages, data.pagination.currentPage);
