@@ -14,28 +14,24 @@ class Pagination {
         textLabel
     ) {
         this.#firstNumberOfPages = 1;
-        this.#totalNumberOfPages = +totalNumberOfPages;
-        this.#currentPage = +currentPage;
-        this.#numberOfCardsPerPage = +numberOfCardsPerPage;
-        this.#textLabel = textLabel;
+        this.#totalNumberOfPages = Number(totalNumberOfPages);
+        this.#currentPage = Number(currentPage);
+        this.#numberOfCardsPerPage = Number(numberOfCardsPerPage);
+        this.#textLabel = String(textLabel);
     };
 
     init() {
-        this.render(
-            this.firstNumberOfPages,
-            this.totalNumberOfPages,
-            this.currentPage,
-            this.numberOfCardsPerPage,
-            this.textLabel
-        );
+        return (this.render());
     };
 
     render(
-        firstNumberOfPages, 
-        totalNumberOfPages, 
-        currentPage,
-        numberOfCardsPerPage,
-        textLabel
+        {
+        firstNumberOfPages = this.firstNumberOfPages, 
+        totalNumberOfPages = this.totalNumberOfPages, 
+        currentPage = this.currentPage,
+        numberOfCardsPerPage = this.numberOfCardsPerPage,
+        textLabel = this.textLabel
+        } = {}
     ) {
 
         const renderSetting = {  
@@ -54,10 +50,10 @@ class Pagination {
             nextPage: currentPage < totalNumberOfPages
         };
 
-        const createFragmentArrayOfElements = (setting) => {
-            const fragment = document.createDocumentFragment();
+        const createFragmentArrayOfPaginationButtons = (setting) => {
+            const fragmentArrayOfPaginationButtons = document.createDocumentFragment();
 
-            const createElement = (elementType, elementContent) => {
+            const createPaginationButton = (elementType, elementContent) => {
                 if (elementContent !== false) {
 
                     const addClass = (elementType, elementContent) => {
@@ -96,28 +92,29 @@ class Pagination {
                     newElement.classList.add(...addClass(elementType, elementContent).split(' '));                  
                     newElement.textContent = (addTextContent(elementType, elementContent));
 
-                    return fragment.appendChild(newElement);
+                    return fragmentArrayOfPaginationButtons.appendChild(newElement);
                 };
             };
 
             for (const key in setting) {
                 if (setting.hasOwnProperty(key)) {
                     if (Array.isArray(setting[key]) === false) {
-                        createElement(key, setting[key]);
+                        createPaginationButton(key, setting[key]);
                     };
                     if (Array.isArray(setting[key])) {
-                        setting[key].forEach((value) => createElement(key, value));
+                        setting[key].forEach((value) => createPaginationButton(key, value));
                     };
                 };
             };
 
-            return fragment;
+            return fragmentArrayOfPaginationButtons;
         };
 
         const renderResizeWidthElements = () => {
             const element = document.querySelectorAll('.pagination__button');
+
             element.forEach((item) => {
-                if (item.textContent.trim() !== '') {
+                if (item.textContent !== '') {
                     const getWidthTextFromCanvas = (element) => {
                         const canvas = document.createElement('canvas');
                         const context = canvas.getContext('2d');
@@ -140,37 +137,27 @@ class Pagination {
 
         const parentContainer = document.querySelector('fieldset.pagination__fieldset');
         parentContainer.textContent = '';
-        const fragment = createFragmentArrayOfElements(renderSetting);
-        parentContainer.appendChild(fragment);
+        parentContainer.appendChild(createFragmentArrayOfPaginationButtons(renderSetting));
 
-        return renderResizeWidthElements();
+        return (renderResizeWidthElements());
     };
 
     click(event) {
         const classes = event.target.classList;
         const textContent = event.target.textContent;
+
         if (classes.contains('pagination__button')) {
             if (classes.contains('pagination__button_previousPage')) {
-                return this.render(
-                    this.firstNumberOfPages, 
-                    this.totalNumberOfPages, 
-                    --this.currentPage
-                );
+                --this.currentPage;
+                return (this.render());
             };
             if (classes.contains('pagination__button_nextPage')) {
-                return this.render(
-                    this.firstNumberOfPages, 
-                    this.totalNumberOfPages, 
-                    ++this.currentPage
-                );
+                ++this.currentPage;
+                return (this.render());
             };
             if (textContent.trim() !== '' && textContent != '\u002E\u002E\u002E') {
                 this.currentPage = +textContent;
-                return this.render(
-                    this.firstNumberOfPages, 
-                    this.totalNumberOfPages, 
-                    this.currentPage
-                );
+                return (this.render());
             };
         };
     };

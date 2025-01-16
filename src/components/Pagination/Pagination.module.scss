@@ -20,7 +20,6 @@
     display: block;
     box-sizing: content-box;
     height: $height;
-    width: $height;
     border: none;
     border-radius: $height * 0.55;
     padding: 0;
@@ -43,6 +42,7 @@
     };
   
     &_previousPage {
+      width: $height;
       background: linear-gradient(theme.$secondary-gradient-color-1, theme.$secondary-gradient-color-2);
 
       &::after {
@@ -60,6 +60,7 @@
     };
   
     &_nextPage {
+      width: $height;
       background: linear-gradient(theme.$secondary-gradient-color-1, theme.$secondary-gradient-color-2);
 
       &::after {
