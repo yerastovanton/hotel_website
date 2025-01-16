@@ -1,22 +1,46 @@
 import data from '@data/pagination.json';
 
 class Pagination {
+    #firstNumberOfPages;
+    #totalNumberOfPages;
+    #currentPage;
+    #numberOfCardsPerPage;
+    #textLabel;
 
-    constructor(totalNumberOfPages, currentPage) {
-        this._firstNumberOfPages = 1;
-        this._totalNumberOfPages = +totalNumberOfPages;
-        this._currentPage = +currentPage;
+    constructor(
+        totalNumberOfPages, 
+        currentPage, 
+        numberOfCardsPerPage, 
+        textLabel
+    ) {
+        this.#firstNumberOfPages = 1;
+        this.#totalNumberOfPages = +totalNumberOfPages;
+        this.#currentPage = +currentPage;
+        this.#numberOfCardsPerPage = +numberOfCardsPerPage;
+        this.#textLabel = textLabel;
     };
 
     init() {
-        this.render(this.firstNumberOfPages, this.totalNumberOfPages, this.currentPage);
+        this.render(
+            this.firstNumberOfPages,
+            this.totalNumberOfPages,
+            this.currentPage,
+            this.numberOfCardsPerPage,
+            this.textLabel
+        );
     };
 
-    render(firstNumberOfPages, totalNumberOfPages, currentPage) {
+    render(
+        firstNumberOfPages, 
+        totalNumberOfPages, 
+        currentPage,
+        numberOfCardsPerPage,
+        textLabel
+    ) {
 
         const renderSetting = {  
-            previousPageButton: currentPage > firstNumberOfPages,
-            firstPageButton: currentPage > firstNumberOfPages ? firstNumberOfPages : false,
+            previousPage: currentPage > firstNumberOfPages,
+            firstPage: currentPage > firstNumberOfPages ? firstNumberOfPages : false,
             firstDash: (currentPage - 3) > firstNumberOfPages,
             arrayOfClosestPages: [
                 (currentPage - 2) > firstNumberOfPages ? currentPage - 2 : false,
@@ -26,8 +50,8 @@ class Pagination {
                 (currentPage + 2) < totalNumberOfPages ? currentPage + 2 : false,
             ],
             secondDash: (currentPage + 3) < totalNumberOfPages,
-            lastPageButton: currentPage < totalNumberOfPages ? totalNumberOfPages : false,
-            nextPageButton: currentPage < totalNumberOfPages
+            lastPage: currentPage < totalNumberOfPages ? totalNumberOfPages : false,
+            nextPage: currentPage < totalNumberOfPages
         };
 
         const createFragmentArrayOfElements = (setting) => {
@@ -35,21 +59,42 @@ class Pagination {
 
             const createElement = (elementType, elementContent) => {
                 if (elementContent !== false) {
+
+                    const addClass = (elementType, elementContent) => {
+                        let className = `pagination__button`;
+                        if (elementType === 'previousPage') {
+                            className += ` ${className}_previousPage`;
+                        };
+                        if (elementType === 'nextPage') {
+                            className += ` ${className}_nextPage`;
+                        };
+                        if (elementType === 'firstDash' || elementType === 'secondDash') {
+                            className += ` ${className}_dash`;
+                        };
+                        if (elementType === 'arrayOfClosestPages' && elementContent === currentPage) {
+                            className += ` ${className}_currentPage`;
+                        };
+                        if (elementContent !== '') {
+                            className += ` text_button_pagination`;
+                        };
+                        if (elementContent === currentPage) {
+                            className += ` text_button_pagination_currentPage`;
+                        };
+
+                        return (className);
+                    };
+
+                    const addTextContent = (elementType, elementContent) => {
+                        let textContent = '';
+                        if (typeof(elementContent) === 'number') textContent = elementContent;
+                        if (elementType === 'firstDash' || elementType === 'secondDash') textContent = '\u002E\u002E\u002E';
+
+                        return (textContent);
+                    };
+
                     const newElement = document.createElement('button');
-                    
-                    const className = 'pagination__button';
-                    newElement.classList.add(`${className}`);
-                    if (elementType === 'previousPageButton') newElement.classList.add(`${className}_previousPage`);
-                    if (elementType === 'nextPageButton') newElement.classList.add(`${className}_nextPage`);
-                    if (elementType === 'firstDash' || elementType === 'secondDash') newElement.classList.add(`${className}_dash`);
-                    if (elementType === 'arrayOfClosestPages' && elementContent === currentPage) newElement.classList.add(`${className}_currentPage`);
-                    newElement.classList.add('text_button_pagination');
-                    if (elementType === 'arrayOfClosestPages' && elementContent === currentPage) newElement.classList.add('text_button_pagination_currentPage');
-                    
-                    let textContent = '';
-                    if (typeof(elementContent) === 'number') textContent = elementContent;
-                    if (elementType === 'firstDash' || elementType === 'secondDash') textContent = '\u002E\u002E\u002E';
-                    newElement.textContent = `${textContent}`;
+                    newElement.classList.add(...addClass(elementType, elementContent).split(' '));                  
+                    newElement.textContent = (addTextContent(elementType, elementContent));
 
                     return fragment.appendChild(newElement);
                 };
@@ -105,30 +150,63 @@ class Pagination {
         const classes = event.target.classList;
         const textContent = event.target.textContent;
         if (classes.contains('pagination__button')) {
-            if (classes.contains('pagination__button_previousPage')) return this.render(this.firstNumberOfPages, this.totalNumberOfPages, --this.currentPage);
-            if (classes.contains('pagination__button_nextPage')) return this.render(this.firstNumberOfPages, this.totalNumberOfPages, ++this.currentPage);
+            if (classes.contains('pagination__button_previousPage')) {
+                return this.render(
+                    this.firstNumberOfPages, 
+                    this.totalNumberOfPages, 
+                    --this.currentPage
+                );
+            };
+            if (classes.contains('pagination__button_nextPage')) {
+                return this.render(
+                    this.firstNumberOfPages, 
+                    this.totalNumberOfPages, 
+                    ++this.currentPage
+                );
+            };
             if (textContent.trim() !== '' && textContent != '\u002E\u002E\u002E') {
                 this.currentPage = +textContent;
-                return this.render(this.firstNumberOfPages, this.totalNumberOfPages, this.currentPage);
+                return this.render(
+                    this.firstNumberOfPages, 
+                    this.totalNumberOfPages, 
+                    this.currentPage
+                );
             };
         };
     };
 
     get firstNumberOfPages() {
-        return this._firstNumberOfPages;
+        return this.#firstNumberOfPages;
     };
 
     get totalNumberOfPages() {
-        return this._totalNumberOfPages;
+        return this.#totalNumberOfPages;
     };
 
     get currentPage() {
-        return this._currentPage;
+        return this.#currentPage;
+    };
+
+    get numberOfCardsPerPage() {
+        return this.#numberOfCardsPerPage;
+    };
+    
+    get textLabel() {
+        return this.#textLabel;
     };
 
     set currentPage(currentPage) {
-        return this._currentPage = currentPage;
+        return this.#currentPage = currentPage;
+    };
+
+    set numberOfCardsPerPage(numberOfCardsPerPage) {
+        return this.#numberOfCardsPerPage = numberOfCardsPerPage;
     };
 };
 
-export const pagination = new Pagination(data.pagination.totalNumberOfPages, data.pagination.currentPage);
+export const pagination = new Pagination(
+    data.pagination.totalNumberOfPages, 
+    data.pagination.currentPage,
+    data.pagination.numberOfCardsPerPage,
+    data.pagination.textLabel
+);

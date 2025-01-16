@@ -14,11 +14,6 @@
     row-gap: 0;
     flex-wrap: nowrap;
     outline: none;
-
-    &:last-child {
-      margin-left: auto;
-      flex-basis: 100%;
-    };
   };
 
   &__button {
@@ -33,6 +28,11 @@
     outline: none;
     cursor: pointer;
     position: relative;
+
+    // &:last-child {
+    //   margin-left: auto;
+    //   flex-basis: 100%;
+    // };
     
     &_currentPage {
       background: linear-gradient(theme.$primary-gradient-color-1, theme.$primary-gradient-color-2);
@@ -78,6 +78,7 @@
   };
 
   &__label {
-    
+    flex-basis: 100%;
+    flex-grow: 1;
   }
 };
