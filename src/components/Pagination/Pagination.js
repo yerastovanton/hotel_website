@@ -51,95 +51,119 @@ class Pagination {
         };
 
         const createFragmentArrayOfPaginationButtons = (setting) => {
-            const fragmentArrayOfPaginationButtons = document.createDocumentFragment();
 
-            const createPaginationButton = (elementType, elementContent) => {
-                if (elementContent !== false) {
-
-                    const addClass = (elementType, elementContent) => {
-                        let className = `pagination__button`;
-                        if (elementType === 'previousPage') {
-                            className += ` ${className}_previousPage`;
+            const createFragmentNotResizedWidthArrayOfPaginationButtons = (setting) => {
+                const createPaginationButton = (elementType, elementContent) => {
+                    if (elementContent !== false) {
+    
+                        const addClass = (elementType, elementContent) => {
+                            let className = `pagination__button`;
+                            if (elementType === 'previousPage') {
+                                className += ` ${className}_previousPage`;
+                            };
+                            if (elementType === 'nextPage') {
+                                className += ` ${className}_nextPage`;
+                            };
+                            if (elementType === 'firstDash' || elementType === 'secondDash') {
+                                className += ` ${className}_dash`;
+                            };
+                            if (elementType === 'arrayOfClosestPages' && elementContent === currentPage) {
+                                className += ` ${className}_currentPage`;
+                            };
+                            if (elementContent !== '') {
+                                className += ` text_button_pagination`;
+                            };
+                            if (elementContent === currentPage) {
+                                className += ` text_button_pagination_currentPage`;
+                            };
+    
+                            return (className);
                         };
-                        if (elementType === 'nextPage') {
-                            className += ` ${className}_nextPage`;
+    
+                        const addTextContent = (elementType, elementContent) => {
+                            let textContent = '';
+                            if (typeof(elementContent) === 'number') textContent = elementContent;
+                            if (elementType === 'firstDash' || elementType === 'secondDash') textContent = '\u002E\u002E\u002E';
+    
+                            return (textContent);
                         };
-                        if (elementType === 'firstDash' || elementType === 'secondDash') {
-                            className += ` ${className}_dash`;
-                        };
-                        if (elementType === 'arrayOfClosestPages' && elementContent === currentPage) {
-                            className += ` ${className}_currentPage`;
-                        };
-                        if (elementContent !== '') {
-                            className += ` text_button_pagination`;
-                        };
-                        if (elementContent === currentPage) {
-                            className += ` text_button_pagination_currentPage`;
-                        };
-
-                        return (className);
-                    };
-
-                    const addTextContent = (elementType, elementContent) => {
-                        let textContent = '';
-                        if (typeof(elementContent) === 'number') textContent = elementContent;
-                        if (elementType === 'firstDash' || elementType === 'secondDash') textContent = '\u002E\u002E\u002E';
-
-                        return (textContent);
-                    };
-
-                    const newElement = document.createElement('button');
-                    newElement.classList.add(...addClass(elementType, elementContent).split(' '));                  
-                    newElement.textContent = (addTextContent(elementType, elementContent));
-
-                    return fragmentArrayOfPaginationButtons.appendChild(newElement);
-                };
-            };
-
-            for (const key in setting) {
-                if (setting.hasOwnProperty(key)) {
-                    if (Array.isArray(setting[key]) === false) {
-                        createPaginationButton(key, setting[key]);
-                    };
-                    if (Array.isArray(setting[key])) {
-                        setting[key].forEach((value) => createPaginationButton(key, value));
+    
+                        const newElement = document.createElement('button');
+                        newElement.classList.add(...addClass(elementType, elementContent).split(' '));                  
+                        newElement.textContent = addTextContent(elementType, elementContent);
+    
+                        return (fragmentArrayOfPaginationButtons.appendChild(newElement));
                     };
                 };
+
+                const fragmentArrayOfPaginationButtons = document.createDocumentFragment();
+
+                for (const key in setting) {
+                    if (setting.hasOwnProperty(key)) {
+                        if (Array.isArray(setting[key]) === false) {
+                            createPaginationButton(key, setting[key]);
+                        };
+                        if (Array.isArray(setting[key])) {
+                            setting[key].forEach((value) => createPaginationButton(key, value));
+                        };
+                    };
+                };
+
+                return (fragmentArrayOfPaginationButtons);
             };
 
-            return fragmentArrayOfPaginationButtons;
-        };
-
-        const renderResizeWidthElements = () => {
-            const element = document.querySelectorAll('.pagination__button');
-
-            element.forEach((item) => {
-                if (item.textContent !== '') {
-                    const getWidthTextFromCanvas = (element) => {
-                        const canvas = document.createElement('canvas');
-                        const context = canvas.getContext('2d');
-                        context.font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
-                        const text = element.textContent;
-                        const textWidth = context.measureText(text).width;
-        
-                        return textWidth;
-                    };
-        
-                    const computedStyle = getComputedStyle(item);
-                    const height = computedStyle.height.replace('px', '');
-                    const margin = 0.8 * height;
-                    const textWidth = getWidthTextFromCanvas(item);
+            const resizeWidthPaginationButton = (fragment) => {
+                const obtainPaginationButtonFontSize = (fragment) => {
+                    const button = fragment.children[0].cloneNode(true);
+                    document.body.appendChild(button);
+                    const computedStyle = window.getComputedStyle(button);
+                    const fontSize = computedStyle.fontSize.replace('px', '');
+                    const fontFamily = computedStyle.fontFamily;
+                    document.body.removeChild(button);
                     
-                    item.style.width = `${textWidth + margin}px`;
+                    return ({fontSize, fontFamily});
                 };
-            });
+
+                const resizeWidth = (fragment) => {
+                    const {fontSize, fontFamily} = obtainPaginationButtonFontSize(fragment);
+                    for (const child of fragment.children) {
+                        if (child.textContent !== '') {
+                            const getWidthTextFromCanvas = (element, fontSize, fontFamily) => {
+                                const canvas = document.createElement('canvas');
+                                const context = canvas.getContext('2d');
+                                context.font = `${fontSize} ${fontFamily}`;
+                                const text = element.textContent;
+                                const textWidth = context.measureText(text).width;
+                
+                                return textWidth;
+                            };
+                
+                            const margin = 2 * fontSize;
+                            const textWidth = getWidthTextFromCanvas(child, fontSize, fontFamily);
+                            
+                            child.style.width = `${textWidth + margin}px`;
+                        };
+                    };
+
+                    return (fragment);
+                };
+
+                const resizedWidthPaginationButton = resizeWidth(fragment);
+
+                return (resizedWidthPaginationButton);
+            };
+
+            const fragmentNotResizedWidthArrayOfPaginationButtons = createFragmentNotResizedWidthArrayOfPaginationButtons(setting);
+            const fragmentResizedWidthArrayOfPaginationButtons = resizeWidthPaginationButton(fragmentNotResizedWidthArrayOfPaginationButtons);
+
+            return (fragmentResizedWidthArrayOfPaginationButtons);
         };
 
         const parentContainer = document.querySelector('fieldset.pagination__fieldset');
         parentContainer.textContent = '';
         parentContainer.appendChild(createFragmentArrayOfPaginationButtons(renderSetting));
 
-        return (renderResizeWidthElements());
+        return (parentContainer);
     };
 
     click(event) {
