@@ -5,21 +5,34 @@
   $height: 2.5rem;
 
   &__fieldset {
-    display: inline-flex;
-    box-sizing: content-box;
+    display: flex;
+    box-sizing: border-box;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
     flex-basis: content;
     row-gap: 0;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
+    // width: 10 * $height;
+    margin: 0;
+    padding: 0;
+    border: none;
     outline: none;
+
+    // & > .pagination__button {
+    //   flex: 0 0 auto;
+    // };
+    // & > .pagination__label {
+    //   flex-basis: 100%;
+    // };
   };
 
   &__button {
-    display: block;
+    display: inline-block;
     box-sizing: content-box;
     height: $height;
+    // flex: 0 0 auto;
+    flex-shrink: 0;
     border: none;
     border-radius: $height * 0.55;
     padding: 0;
@@ -27,11 +40,6 @@
     outline: none;
     cursor: pointer;
     position: relative;
-
-    // &:last-child {
-    //   margin-left: auto;
-    //   flex-basis: 100%;
-    // };
     
     &_currentPage {
       background: linear-gradient(theme.$primary-gradient-color-1, theme.$primary-gradient-color-2);
@@ -79,7 +87,12 @@
   };
 
   &__label {
+    display: inline-block;
+    flex-shrink: 0;
     flex-basis: 100%;
-    flex-grow: 1;
-  }
+    text-align: center;
+    // flex-grow: 1;
+      // margin-left: auto;
+      // flex-basis: 100%;
+  };
 };
