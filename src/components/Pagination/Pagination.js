@@ -8,7 +8,7 @@ class Pagination {
     #textLabel;
     #buttonFontSize;
     #buttonFontFamily;
-    #buttonHeight;
+    #buttonWidth;
     #fieldsetWidth;
 
     constructor(
@@ -24,8 +24,7 @@ class Pagination {
         this.#textLabel = String(textLabel);
         this.#buttonFontSize = 0;
         this.#buttonFontFamily = '';
-        this.#buttonHeight = 0;
-        this.#fieldsetWidth = 0;
+        this.#buttonWidth = 0;
     };
 
     init() {
@@ -41,8 +40,7 @@ class Pagination {
         textLabel = this.textLabel,
         buttonFontSize = this.buttonFontSize,
         buttonFontFamily = this.buttonFontFamily,
-        buttonHeight = this.buttonHeight,
-        fieldsetWidth = this.fieldsetWidth
+        buttonWidth = this.buttonWidth,
         } = {}
     ) {
 
@@ -116,9 +114,7 @@ class Pagination {
                                 const textWidth = getWidthTextFromCanvas(elementContent, buttonFontSize, buttonFontFamily);
                                 const margin = 1.5 * textWidth;
                                 let fullButtonWidth = (textWidth + margin);
-                                if (fullButtonWidth < buttonHeight) fullButtonWidth = buttonHeight;
-
-                                fieldsetWidth += fullButtonWidth;
+                                if (fullButtonWidth < buttonWidth) fullButtonWidth = buttonWidth;
                                 
                                 return (`${fullButtonWidth}px`);
                             };
@@ -139,13 +135,21 @@ class Pagination {
 
                     const addClass = (elementType, elementContent) => {
                         let className = `pagination__label`;
+                        className += ` text_body`;
 
                         return (className);
                     };
 
                     const addTextContent = (elementContent) => {
-                        let textContent = elementContent;
-                        console.log(textContent);
+                        const textArr = elementContent.split(' ');
+                        const textContent = 
+                            `${(currentPage - 1) * numberOfCardsPerPage}` +
+                            ` - ` +
+                            `${currentPage * numberOfCardsPerPage}` +
+                            ` ${textArr[0]} ` +
+                            `${(totalNumberOfPages - 1) * numberOfCardsPerPage}` +
+                            `+ ` +
+                            `${textArr.slice(1).join(' ')}`;
 
                         return (textContent);
                     };
@@ -178,7 +182,6 @@ class Pagination {
         const parentContainer = document.querySelector('fieldset.pagination__fieldset');
         parentContainer.textContent = '';
         parentContainer.appendChild(createFragmentArrayOfPaginationButtons(renderSetting, buttonFontSize, buttonFontFamily));
-        parentContainer.style.width = fieldsetWidth;
 
         return (parentContainer);
     };
@@ -245,31 +248,20 @@ class Pagination {
         return (this.#buttonFontFamily = buttonFontFamily);
     };
 
-    get buttonHeight() {
+    get buttonWidth() {
         const button = document.createElement('button');
         button.classList.add('pagination__button');
         document.body.appendChild(button);
         const computedStyle = window.getComputedStyle(button);
-        const buttonHeight = Number(computedStyle.height.replace('px', ''));
+        const buttonHeigth = Number(computedStyle.height.replace('px', ''));
+        const buttonWidth = buttonHeigth;
         document.body.removeChild(button);
     
-        return (this.#buttonHeight = buttonHeight);
-    };
-
-    get fieldsetWidth() {
-        return (this.#fieldsetWidth);
+        return (this.#buttonWidth = buttonWidth);
     };
     
     set currentPage(currentPage) {
         return (this.#currentPage = currentPage);
-    };
-    
-    set numberOfCardsPerPage(numberOfCardsPerPage) {
-        return (this.#numberOfCardsPerPage = numberOfCardsPerPage);
-    };
-
-    set fieldsetWidth(fieldsetWidth) {
-        return (this.#fieldsetWidth = fieldsetWidth);
     };
 };
 
