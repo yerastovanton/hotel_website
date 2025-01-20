@@ -200,7 +200,7 @@ class Pagination {
                 return (this.render());
             };
             if (textContent.trim() !== '' && textContent != '\u002E\u002E\u002E') {
-                this.currentPage = +textContent;
+                this.currentPage = Number(textContent);
                 return (this.render());
             };
         };
