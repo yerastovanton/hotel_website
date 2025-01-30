@@ -1,7 +1,7 @@
 {
     "pagination": {
         "totalNumberOfPages": 100000,
-        "currentPage": 3,
+        "currentPage": 100000,
         "numberOfCardsPerPage": 12,
         "textLabel": "из вариантов аренды"
     }

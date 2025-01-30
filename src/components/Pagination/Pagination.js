@@ -1,267 +1,239 @@
 import data from '@data/pagination.json';
 
-class Pagination {
-    #firstNumberOfPages;
-    #totalNumberOfPages;
+class PaginationState {
     #currentPage;
-    #numberOfCardsPerPage;
-    #textLabel;
-    #buttonFontSize;
-    #buttonFontFamily;
-    #buttonWidth;
-    #fieldsetWidth;
+    #totalPages;
 
-    constructor(
-        totalNumberOfPages, 
-        currentPage, 
-        numberOfCardsPerPage, 
-        textLabel
-    ) {
-        this.#firstNumberOfPages = 1;
-        this.#totalNumberOfPages = Number(totalNumberOfPages);
-        this.#currentPage = Number(currentPage);
-        this.#numberOfCardsPerPage = Number(numberOfCardsPerPage);
-        this.#textLabel = String(textLabel);
-        this.#buttonFontSize = 0;
-        this.#buttonFontFamily = '';
-        this.#buttonWidth = 0;
+    constructor(totalPages, currentPage) {
+        this.#validate(totalPages, currentPage);
+        this.#totalPages = totalPages;
+        this.#currentPage = currentPage;
     };
 
-    init() {
-        return (this.render());
+    toNextPage() {
+        this.currentPage = this.#currentPage + 1;
     };
 
-    render(
-        {
-        firstNumberOfPages = this.firstNumberOfPages, 
-        totalNumberOfPages = this.totalNumberOfPages, 
-        currentPage = this.currentPage,
-        numberOfCardsPerPage = this.numberOfCardsPerPage,
-        textLabel = this.textLabel,
-        buttonFontSize = this.buttonFontSize,
-        buttonFontFamily = this.buttonFontFamily,
-        buttonWidth = this.buttonWidth,
-        } = {}
-    ) {
+    toPreviousPage() {
+        this.currentPage = this.#currentPage - 1;
+    };
 
-        const renderSetting = {  
-            previousPage: currentPage > firstNumberOfPages,
-            firstPage: currentPage > firstNumberOfPages ? firstNumberOfPages : false,
-            firstDash: (currentPage - 3) > firstNumberOfPages,
-            arrayOfClosestPages: [
-                (currentPage - 2) > firstNumberOfPages ? currentPage - 2 : false,
-                (currentPage - 1) > firstNumberOfPages ? currentPage - 1 : false,
-                currentPage, 
-                (currentPage + 1) < totalNumberOfPages ? currentPage + 1 : false,
-                (currentPage + 2) < totalNumberOfPages ? currentPage + 2 : false,
-            ],
-            secondDash: (currentPage + 3) < totalNumberOfPages,
-            lastPage: currentPage < totalNumberOfPages ? totalNumberOfPages : false,
-            nextPage: currentPage < totalNumberOfPages,
-            textLabel: textLabel
+    setPage(page) {
+        this.currentPage = page;
+    }
+
+    #validate(totalPages, currentPage) {
+        if (totalPages < 1) throw (new Error('Количество страниц не должно быть меньше одной'));
+        if (currentPage < 1 || currentPage > totalPages) {
+            throw (new Error('Текущая страница выходит из диапазона'));
         };
-
-        const createFragmentArrayOfPaginationButtons = (renderSetting) => {
-
-            const createPaginationButton = (elementType, elementContent, buttonFontSize, buttonFontFamily) => {
-                if (elementContent !== false) {
-
-                    const addClass = (elementType, elementContent) => {
-                        let className = `pagination__button`;
-                        if (elementType === 'previousPage') {
-                            className += ` ${className}_previousPage`;
-                        };
-                        if (elementType === 'nextPage') {
-                            className += ` ${className}_nextPage`;
-                        };
-                        if (elementType === 'firstDash' || elementType === 'secondDash') {
-                            className += ` ${className}_dash`;
-                        };
-                        if (elementType === 'arrayOfClosestPages' && elementContent === currentPage) {
-                            className += ` ${className}_currentPage`;
-                        };
-                        if (elementContent !== '') {
-                            className += ` text_button_pagination`;
-                        };
-                        if (elementContent === currentPage) {
-                            className += ` text_button_pagination_currentPage`;
-                        };
-
-                        return (className);
-                    };
-
-                    const addTextContent = (elementType, elementContent) => {
-                        let textContent = '';
-                        if (typeof(elementContent) === 'number') textContent = elementContent;
-                        if (elementType === 'firstDash' || elementType === 'secondDash') textContent = '\u002E\u002E\u002E';
-
-                        return (textContent);
-                    };
-
-                    const resizeWidth = (elementType, elementContent, buttonFontSize, buttonFontFamily) => {
-                        if (elementType !== 'previousPage' && elementType !== 'nextPage') {
-                            if (elementContent !== '') {
-                                const getWidthTextFromCanvas = (elementContent, buttonFontSize, buttonFontFamily) => {
-                                    const canvas = document.createElement('canvas');
-                                    const context = canvas.getContext('2d');
-                                    context.font = `${buttonFontSize} ${buttonFontFamily}`;
-                                    const text = elementContent;
-                                    const textWidth = context.measureText(text).width;
-                    
-                                    return (textWidth);
-                                };
-                
-                                const textWidth = getWidthTextFromCanvas(elementContent, buttonFontSize, buttonFontFamily);
-                                const margin = 1.5 * textWidth;
-                                let fullButtonWidth = (textWidth + margin);
-                                if (fullButtonWidth < buttonWidth) fullButtonWidth = buttonWidth;
-                                
-                                return (`${fullButtonWidth}px`);
-                            };
-                        };
-                    };
-
-                    const newElement = document.createElement('button');
-                    newElement.classList.add(...addClass(elementType, elementContent).split(' '));                  
-                    newElement.textContent = addTextContent(elementType, elementContent);
-                    newElement.style.width = resizeWidth(elementType, elementContent, buttonFontSize, buttonFontFamily);
-
-                    return (fragmentArrayOfPaginationButtons.appendChild(newElement));
-                };
-            };
-
-            const createPaginationLabel = (elementType, elementContent) => {
-                if (elementContent !== false) {
-
-                    const addClass = (elementType, elementContent) => {
-                        let className = `pagination__label`;
-                        className += ` text_body`;
-
-                        return (className);
-                    };
-
-                    const addTextContent = (elementContent) => {
-                        const textArr = elementContent.split(' ');
-                        const textContent = 
-                            `${(currentPage - 1) * numberOfCardsPerPage}` +
-                            ` - ` +
-                            `${currentPage * numberOfCardsPerPage}` +
-                            ` ${textArr[0]} ` +
-                            `${(totalNumberOfPages - 1) * numberOfCardsPerPage}` +
-                            `+ ` +
-                            `${textArr.slice(1).join(' ')}`;
-
-                        return (textContent);
-                    };
-
-                    const newElement = document.createElement('label');
-                    newElement.classList.add(...addClass(elementType, elementContent).split(' '));                  
-                    newElement.textContent = addTextContent(elementContent);
-
-                    return (fragmentArrayOfPaginationButtons.appendChild(newElement));
-                };
-            };
-
-            const fragmentArrayOfPaginationButtons = document.createDocumentFragment();
-
-            for (const key in renderSetting) {
-                if (renderSetting.hasOwnProperty(key)) {
-                    if (Array.isArray(renderSetting[key]) === false) {
-                        if (key !== 'textLabel') createPaginationButton(key, renderSetting[key], buttonFontSize, buttonFontFamily);
-                        if (key === 'textLabel') createPaginationLabel(key, renderSetting[key]);
-                    };
-                    if (Array.isArray(renderSetting[key])) {
-                        renderSetting[key].forEach((value) => createPaginationButton(key, value, buttonFontSize, buttonFontFamily));
-                    };
-                };
-            };
-
-            return (fragmentArrayOfPaginationButtons);
-        };
-
-        const parentContainer = document.querySelector('fieldset.pagination__fieldset');
-        parentContainer.textContent = '';
-        parentContainer.appendChild(createFragmentArrayOfPaginationButtons(renderSetting, buttonFontSize, buttonFontFamily));
-
-        return (parentContainer);
-    };
-
-    click(event) {
-        const classes = event.target.classList;
-        const textContent = event.target.textContent;
-
-        if (classes.contains('pagination__button')) {
-            if (classes.contains('pagination__button_previousPage')) {
-                --this.currentPage;
-                return (this.render());
-            };
-            if (classes.contains('pagination__button_nextPage')) {
-                ++this.currentPage;
-                return (this.render());
-            };
-            if (textContent.trim() !== '' && textContent != '\u002E\u002E\u002E') {
-                this.currentPage = Number(textContent);
-                return (this.render());
-            };
-        };
-    };
-
-    get firstNumberOfPages() {
-        return (this.#firstNumberOfPages);
-    };
-
-    get totalNumberOfPages() {
-        return (this.#totalNumberOfPages);
     };
 
     get currentPage() {
         return (this.#currentPage);
     };
 
-    get numberOfCardsPerPage() {
-        return (this.#numberOfCardsPerPage);
-    };
-    
-    get textLabel() {
-        return (this.#textLabel);
+    get totalPages() {
+        return (this.#totalPages);
     };
 
-    get buttonFontSize() {
-        const button = document.createElement('button');
-        button.classList.add('pagination__button');
-        document.body.appendChild(button);
-        const computedStyle = window.getComputedStyle(button);
-        const buttonFontSize = Number(computedStyle.fontSize.replace('px', ''));
-        document.body.removeChild(button);
-    
-        return (this.#buttonFontSize = buttonFontSize);
+    set currentPage(value) {
+        if (currentPage < 1 || currentPage > totalPages) {
+            throw (new Error('Текущая страница выходит из диапазона'));
+        };
+        this.#currentPage = value;
+    };
+};
+
+class Pagination {
+    #state;
+    #config;
+    #resizeObserver;
+    #cardsPerPage;
+    #labelText;
+
+    static DEFAULT_CONFIG = {
+        visiblePagesRange: 2,
+        buttonMinWidth: 40,
+        cssClasses: {
+            container: 'pagination__fieldset',
+            button: 'pagination__button',
+            current: 'pagination__button_current',
+            dots: 'pagination__button_dots',
+            label: 'pagination__label',
+            buttonText: 'text_button_pagination',
+            buttonCurrentText: 'text_button_pagination_current',
+            labelText: 'text_body'
+        }
     };
 
-    get buttonFontFamily() {
-        const button = document.createElement('button');
-        button.classList.add('pagination__button');
-        document.body.appendChild(button);
-        const computedStyle = window.getComputedStyle(button);
-        const buttonFontFamily = computedStyle.fontFamily;
-        document.body.removeChild(button);
-    
-        return (this.#buttonFontFamily = buttonFontFamily);
+    constructor(
+        totalPages,
+        currentPage,
+        cardsPerPage,
+        labelText,
+        config = {}
+    ) {
+        this.#state = new PaginationState(totalPages, currentPage);
+        this.#config = { ...Pagination.DEFAULT_CONFIG, ...config };
+        this.#resizeObserver = new ResizeObserver(this.#adjustButtonWidths.bind(this));
+        this.#cardsPerPage = Number(cardsPerPage);
+        this.#labelText = String(labelText);
     };
 
-    get buttonWidth() {
-        const button = document.createElement('button');
-        button.classList.add('pagination__button');
-        document.body.appendChild(button);
-        const computedStyle = window.getComputedStyle(button);
-        const buttonHeigth = Number(computedStyle.height.replace('px', ''));
-        const buttonWidth = buttonHeigth;
-        document.body.removeChild(button);
-    
-        return (this.#buttonWidth = buttonWidth);
+    init() {
+        this.#render();
+        return (this);
     };
-    
-    set currentPage(currentPage) {
-        return (this.#currentPage = currentPage);
+
+    getNameContainer() {
+        return (this.#config.cssClasses.container);
+    };
+
+    handleEvent(event) {
+        const target = event.target.closest('[data-action], [data-page]');
+        if (!target || !this.#getContainer.contains(target)) return;
+
+        const action = target.dataset.action;
+        const page = target.dataset.page;
+
+        if (action === 'previous') this.#toPreviousPage();
+        else if (action === 'next') this.#toNextPage();
+        else if (page) this.#setPage(Number(page));
+    };
+
+    #render() {
+        const container = this.#getContainer();
+        container.replaceChildren(
+            this.#createNavigationButton('previous'),
+            ...this.#createPageElements(),
+            this.#createNavigationButton('next'),
+            this.#createStatusLabel()
+        );
+        this.#updateCurrentButtonAriaLabels();
+        this.#adjustButtonWidths();
+        this.#resizeObserver.observe(container);
+    };
+
+    #getContainer() {
+        const container = document.querySelector(`.${this.#config.cssClasses.container}`);
+        container.setAttribute('role', 'navigation');
+        return (container);
+    };
+
+    #createNavigationButton(type) {
+        const button = document.createElement('button');
+        button.classList.add(`${this.#config.cssClasses.button}`);
+        button.classList.add(`${this.#config.cssClasses.button}_${type}`);
+        button.dataset.action = type;
+        button.disabled = type === 'previous'
+            ? (this.#state.currentPage === 1)
+            : (this.#state.currentPage === this.#state.totalPages);
+        return (button);
+    };
+
+    #createPageElements() {
+        return (this.#getVisiblePages().map(page =>
+            page === '...'
+            ? this.#createDots()
+            : this.#createPageButton(page)
+        ));
+    };
+
+    #getVisiblePages() {
+        const current = this.#state.currentPage;
+        const total = this.#state.totalPages;
+        const range = this.#config.visiblePagesRange;
+        const pages = [];
+        let start = Math.max(1, current - range);
+        let end = Math.min(total, current + range);
+
+        if (current - range > 1) pages.push(1, '...');
+        for (let i = start; i <= end; i++) pages.push(i);
+        if (current + range < total) pages.push('...', total);
+
+        return (pages);
+    };
+
+    #createDots() {
+        const dots = document.createElement('button');
+        dots.classList.add(`${this.#config.cssClasses.buttonText}`);
+        dots.classList.add(this.#config.cssClasses.button);
+        dots.classList.add(this.#config.cssClasses.dots);
+        dots.textContent = `\u002E\u002E\u002E`;
+        dots.setAttribute('aria-hidden', 'true');
+        dots.setAttribute('role', 'presentation');
+        return (dots);
+    };
+
+    #createPageButton(page) {
+        const button = document.createElement('button');
+        button.classList.add(`${this.#config.cssClasses.buttonText}`);
+        button.classList.add(this.#config.cssClasses.button);
+        button.textContent = page;
+        button.dataset.page = page;
+
+        if (page === this.#state.currentPage) {
+            button.classList.add(`${this.#config.cssClasses.buttonCurrentText}`);
+            button.classList.add(this.#config.cssClasses.current);
+            button.setAttribute('aria-current', 'page');
+        };
+
+        return (button);
+    };
+
+    #createStatusLabel() {
+        const label = document.createElement('label');
+        label.classList.add(`${this.#config.cssClasses.labelText}`);
+        label.classList.add(this.#config.cssClasses.label);
+        label.textContent = this.#getLabelText();
+        return (label);
+    };
+
+    #getLabelText() {
+        const [firstWord, ...rest] = this.#labelText.split(' ');
+        const remainingString = rest.join(' ');
+        const from = `
+            ${(this.#state.currentPage - 1) * this.#cardsPerPage}
+            -
+            ${this.#state.currentPage * this.#cardsPerPage}
+        `;
+        const to = `${this.#state.totalPages * this.#cardsPerPage}+`;
+        return (`${from} ${firstWord} ${to} ${remainingString}`);
+    };
+
+    #updateCurrentButtonAriaLabels() {
+        const currentBtn = this.#getContainer().querySelector(
+            `.${this.#config.cssClasses.current}`
+        );
+        if (currentBtn) {
+            currentBtn.setAttribute('aria-label', `Page ${this.#state.currentPage}`);
+        };
+    };
+
+    #adjustButtonWidths() {
+        const buttons = this.#getContainer().querySelectorAll('button');
+        buttons.forEach(btn => {
+            if (!btn.textContent) return;
+            btn.style.minWidth = (btn.scrollWidth > this.#config.buttonMinWidth)
+                ? `${btn.scrollWidth + 10}px`
+                : `${this.#config.buttonMinWidth}px`
+        });
+    };
+
+    #toPreviousPage() {
+        this.#state.toPreviousPage();
+        this.#render();
+    };
+
+    #toNextPage() {
+        this.#state.toNextPage();
+        this.#render();
+    };
+
+    #setPage(page) {
+        this.#state.setPage(page);
+        this.#render();
     };
 };
 

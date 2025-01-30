@@ -246,7 +246,7 @@ $text-transform_uppercase: uppercase;
       @extend %text-shared_h3_regular;
       color: theme.$font-color-dark-shade-50;
 
-      &_currentPage {
+      &_current {
         @extend %text-shared_h3_regular;
         color: theme.$font-color-white;
       }

@@ -32,15 +32,15 @@
     cursor: pointer;
     position: relative;
     
-    &_currentPage {
+    &_current {
       background: linear-gradient(theme.$primary-gradient-color-1, theme.$primary-gradient-color-2);
     };
 
-    &_dash {
+    &_dots {
       cursor: default;
     };
   
-    &_previousPage {
+    &_previous {
       width: $height;
       background: linear-gradient(theme.$secondary-gradient-color-1, theme.$secondary-gradient-color-2);
 
@@ -58,7 +58,7 @@
       };
     };
   
-    &_nextPage {
+    &_next {
       width: $height;
       background: linear-gradient(theme.$secondary-gradient-color-1, theme.$secondary-gradient-color-2);
 

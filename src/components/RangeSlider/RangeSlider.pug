@@ -1,0 +1,30 @@
+mixin rangeSliderMixin()
+    fieldset.rangeSlider__fieldset
+        div(
+            role = 'group',
+            aria-label = 'Диапазон стоимости'
+        ).rangeSlider__container
+            div(
+                aria-hidden = 'true'
+            ).rangeSlider__track
+                div(
+                    aria-hidden = 'true'
+                ).rangeSlider__progress
+                button(
+                    role = 'slider',
+                    tabindex = '0',
+                    aria-valuemin = '0',
+                    aria-valuemax = '0',
+                    aria-valuenow = '0',
+                    aria-valuetext = '',
+                    aria-label = 'Минимальное значение'
+                ).rangeSlider__thumb.rangeSlider__thumb_min
+                button(
+                    role = 'slider',
+                    tabindex = '0',
+                    aria-valuemin = '0',
+                    aria-valuemax = '0',
+                    aria-valuenow = '0',
+                    aria-valuetext = '',
+                    aria-label = 'Максимальное значение'
+                ).rangeSlider__thumb.rangeSlider__thumb_min

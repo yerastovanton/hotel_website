@@ -2,13 +2,25 @@ import '@styles/styles.module.scss';
 import '@components/index.module.scss';
 
 import { pagination } from '@components/index.js';
+// import { rangeSlider } from '@components/index.js';
 
-const init = () => {
+window.addEventListener('load', ()=> {
     pagination.init();
-};
-
-document.body.addEventListener('click', (event) => {
-    if (event.target.closest('.pagination__fieldset')) pagination.click(event);
+    // rangeSlider.init();
 });
 
-init();
+const handleGlobalEvent = (event) => {
+    if (event.target.closest(
+        `${pagination.getNameContainer()}`
+    )) {
+        pagination.handleEvent(event);
+    };
+};
+
+document.body.addEventListener('click', handleGlobalEvent);
+document.body.addEventListener('keydown', handleGlobalEvent);
+
+// document.body.addEventListener('change', (event) => {
+//     if (event.target.closest('.rangeSlider__fieldset')) rangeSlider.change(event);
+// });
+

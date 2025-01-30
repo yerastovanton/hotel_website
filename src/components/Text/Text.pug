@@ -1,7 +1,13 @@
-mixin titleMixin(title, subtitle)
-    if (title != '' && subtitle != '')
-        legend.legend
-            h3.text_h3 title
-            span.text_h3.text_h3_regular subtitle
-    if (title != '' && subtitle === '')
-        legend.text_h3 title
+mixin titleMixin(title, subtitle, subtitleIsOutput = false)
+    if (subtitleIsOutput === false)
+        if (title != '' && subtitle != '')
+            legend.legend
+                h3.text_h3 title
+                span.text_h3.text_h3_regular subtitle
+        if (title != '' && subtitle === '')
+            legend.text_h3 title
+    if (subtitleIsOutput === true)
+        if (title != '' && subtitle != '')
+            legend.legend
+                h3.text_h3 title
+                output.text_h3.text_h3_regular subtitle

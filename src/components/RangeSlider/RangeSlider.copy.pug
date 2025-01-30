@@ -1,0 +1,48 @@
+mixin rangeSliderMixin()
+    fieldset.rangeSlider__fieldset
+        div.rangeSlider__container
+            svg(
+                role = none
+            ).rangeSlider__group
+                g(
+                    aria-hidden = true
+                ).rangeSlider__rail
+                    rect
+                g(
+                    aria-hidden = true
+                ).rangeSlider__range
+                    defs
+                        linearGradient(
+                            id = 'linearGradient'
+                        )
+                            stop(
+                                offset = '0%'
+                            ).rangeSlider__range_startLinearGradient
+                            stop(
+                                offset = '100%'
+                            ).rangeSlider__range_endLinearGradient
+                    rect(
+                        fill = 'url(#linearGradient)'
+                    )
+                g(
+                    role = slider,
+                    tabindex = 0,
+                    aria-valuemin = 0,
+                    aria-valuenow = 0,
+                    aria-valuemax = 0,
+                    aria-label = 'minimum in range slider'
+                ).rangeSlider__thumbMinimun
+                    circle(
+                        fill = 'url(#linearGradient)'
+                    )
+                g(
+                    role = slider,
+                    tabindex = 0,
+                    aria-valuemin = 0,
+                    aria-valuenow = 0,
+                    aria-valuemax = 0,
+                    aria-label = 'maximum in range slider'
+                ).rangeSlider__thumbMaximum
+                    circle(
+                        fill = 'url(#linearGradient)'
+                    )

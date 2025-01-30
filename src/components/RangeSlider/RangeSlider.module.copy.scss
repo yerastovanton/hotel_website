@@ -1,0 +1,46 @@
+@use '@styles/theme.module.scss';
+
+.rangeSlider {
+  $height: 0.75rem;
+
+  &__container {
+    height: $height;
+    width: 100%;
+    touch-action: pan-y;
+  };
+
+  &__group {
+    forced-color-adjust: auto;
+  };
+
+  &__rail rect {
+    height: $height * 0.375;
+    width: 100%;
+    stroke: theme.$border-default-color;
+    stroke-width: $height * 0.0833;
+    fill-opacity: 0;
+  };
+
+  &__range rect {
+    height: $height * 0.375;
+    pointer-events: none;
+  };
+
+  &__thumbMinimun circle,
+  &__thumbMaximum circle {
+    height: $height;
+    width: $height;
+    stroke: theme.$primary-bg-color;
+    stroke-width: $height * 0.0833;
+  };
+
+  &__startLinearGradient {
+    stop-color: theme.$secondary-gradient-color-1;
+    stop-opacity: 1;
+  };
+
+  &__endLinearGradient {
+    stop-color: theme.$secondary-gradient-color-2;
+    stop-opacity: 1;
+  };
+};
