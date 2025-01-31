@@ -228,7 +228,7 @@ class Pagination {
             if (!btn.textContent) return;
             btn.style.width = '';
             btn.style.width = (btn.scrollWidth > this.#config.buttonMinWidth)
-                ? `${btn.scrollWidth + 10}px`
+                ? `${btn.scrollWidth + 15}px`
                 : `${this.#config.buttonMinWidth}px`
         });
     };
