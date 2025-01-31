@@ -23,9 +23,11 @@ class PaginationState {
     }
 
     #validate(totalPages, currentPage) {
-        if (totalPages < 1) throw (new Error('Количество страниц не должно быть меньше одной'));
-        if (currentPage < 1 || currentPage > totalPages) {
-            throw (new Error('Текущая страница выходит из диапазона'));
+        if (typeof totalPages !== 'number' || totalPages < 1) {
+            throw new Error('Некорректное количество страниц');
+        };
+        if (typeof currentPage !== 'number' || currentPage < 1 || currentPage > totalPages) {
+            throw new Error('Некорректный номер текущей страницы');
         };
     };
 
@@ -38,8 +40,8 @@ class PaginationState {
     };
 
     set currentPage(value) {
-        if (currentPage < 1 || currentPage > totalPages) {
-            throw (new Error('Текущая страница выходит из диапазона'));
+        if (value < 1 || value > this.#totalPages) {
+            throw (new Error('Некорректный номер текущей страницы'));
         };
         this.#currentPage = value;
     };
@@ -48,7 +50,7 @@ class PaginationState {
 class Pagination {
     #state;
     #config;
-    #resizeObserver;
+    #handleResize;
     #cardsPerPage;
     #labelText;
 
@@ -76,13 +78,14 @@ class Pagination {
     ) {
         this.#state = new PaginationState(totalPages, currentPage);
         this.#config = { ...Pagination.DEFAULT_CONFIG, ...config };
-        this.#resizeObserver = new ResizeObserver(this.#adjustButtonWidths.bind(this));
+        this.#handleResize = this.#debounce(this.#adjustButtonWidths.bind(this), 100);
         this.#cardsPerPage = Number(cardsPerPage);
         this.#labelText = String(labelText);
     };
 
     init() {
         this.#render();
+        window.addEventListener('resize', this.#handleResize);
         return (this);
     };
 
@@ -92,7 +95,7 @@ class Pagination {
 
     handleEvent(event) {
         const target = event.target.closest('[data-action], [data-page]');
-        if (!target || !this.#getContainer.contains(target)) return;
+        if (!target || !this.#getContainer().contains(target)) return;
 
         const action = target.dataset.action;
         const page = target.dataset.page;
@@ -112,7 +115,6 @@ class Pagination {
         );
         this.#updateCurrentButtonAriaLabels();
         this.#adjustButtonWidths();
-        this.#resizeObserver.observe(container);
     };
 
     #getContainer() {
@@ -129,6 +131,7 @@ class Pagination {
         button.disabled = type === 'previous'
             ? (this.#state.currentPage === 1)
             : (this.#state.currentPage === this.#state.totalPages);
+
         return (button);
     };
 
@@ -211,11 +214,20 @@ class Pagination {
         };
     };
 
+    #debounce(func, wait) {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    };
+
     #adjustButtonWidths() {
         const buttons = this.#getContainer().querySelectorAll('button');
         buttons.forEach(btn => {
             if (!btn.textContent) return;
-            btn.style.minWidth = (btn.scrollWidth > this.#config.buttonMinWidth)
+            btn.style.width = '';
+            btn.style.width = (btn.scrollWidth > this.#config.buttonMinWidth)
                 ? `${btn.scrollWidth + 10}px`
                 : `${this.#config.buttonMinWidth}px`
         });

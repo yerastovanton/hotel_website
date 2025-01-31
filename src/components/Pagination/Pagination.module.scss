@@ -23,6 +23,7 @@
     display: inline-block;
     box-sizing: content-box;
     height: $height;
+    width: max-content;
     flex-shrink: 0;
     border: none;
     border-radius: $height * 0.55;

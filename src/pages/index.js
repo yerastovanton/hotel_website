@@ -11,7 +11,7 @@ window.addEventListener('load', ()=> {
 
 const handleGlobalEvent = (event) => {
     if (event.target.closest(
-        `${pagination.getNameContainer()}`
+        `.${pagination.getNameContainer()}`
     )) {
         pagination.handleEvent(event);
     };
