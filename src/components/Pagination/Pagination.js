@@ -56,7 +56,8 @@ class Pagination {
 
     static DEFAULT_CONFIG = {
         visiblePagesRange: 2,
-        buttonMinWidth: 40,
+        rem: 16,
+        buttonMinWidth: 2.5,
         cssClasses: {
             container: 'pagination__fieldset',
             button: 'pagination__button',
@@ -227,10 +228,14 @@ class Pagination {
         buttons.forEach(btn => {
             if (!btn.textContent) return;
             btn.style.width = '';
-            btn.style.width = (btn.scrollWidth > this.#config.buttonMinWidth)
-                ? `${btn.scrollWidth + 15}px`
-                : `${this.#config.buttonMinWidth}px`
+            btn.style.width = (this.#convertPxToRem(btn.scrollWidth) > this.#config.buttonMinWidth)
+                ? `${this.#convertPxToRem(btn.scrollWidth) + 1}rem`
+                : `${this.#config.buttonMinWidth}rem`
         });
+    };
+
+    #convertPxToRem(px) {
+        return (px / this.#config.rem);
     };
 
     #toPreviousPage() {
