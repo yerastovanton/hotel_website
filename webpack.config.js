@@ -74,6 +74,10 @@ return {
             filename: '[name].[contenthash].js',
             clean: true,
         },
+        optimization: {
+            usedExports: isDev ? false : true,
+            sideEffects: isDev ? false : true
+        },
         resolve: {
             alias: {
                 "@src": path.resolve(__dirname, "src"),
@@ -99,7 +103,7 @@ return {
             }),
             ...htmlWebpackPluginSetting,
         ],
-        devtool: isDev ? false : 'inline-source-map',
+        devtool: isDev ? 'eval-cheap-module-source-map' : 'source-map',
         devServer: isDev ? {
             port: env.port || 5000,
             open: true,
