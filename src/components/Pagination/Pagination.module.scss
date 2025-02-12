@@ -32,6 +32,10 @@
     outline: none;
     cursor: pointer;
     position: relative;
+
+    &[disabled] {
+      display: none;
+    };
     
     &_current {
       background: linear-gradient(theme.$primary-gradient-color-1, theme.$primary-gradient-color-2);
