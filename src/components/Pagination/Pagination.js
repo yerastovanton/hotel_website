@@ -58,6 +58,7 @@ class Pagination {
         visiblePagesRange: 2,
         rem: 16,
         buttonMinWidth: 2.5,
+        buttonWidthPadding: 1,
         cssClasses: {
             container: 'pagination__fieldset',
             button: 'pagination__button',
@@ -129,16 +130,19 @@ class Pagination {
         button.classList.add(`${this.#config.cssClasses.button}`);
         button.classList.add(`${this.#config.cssClasses.button}_${type}`);
         button.dataset.action = type;
+        button.setAttribute('aria-label', `${type} page`);
+
         button.disabled = type === 'previous'
             ? (this.#state.currentPage === 1)
             : (this.#state.currentPage === this.#state.totalPages);
+        button.setAttribute('aria-disabled', button.disabled);
 
         return (button);
     };
 
     #createPageElements() {
         return (this.#getVisiblePages().map(page =>
-            page === '...'
+            page === `\u002E\u002E\u002E`
             ? this.#createDots()
             : this.#createPageButton(page)
         ));
@@ -152,9 +156,9 @@ class Pagination {
         let start = Math.max(1, current - range);
         let end = Math.min(total, current + range);
 
-        if (current - range > 1) pages.push(1, '...');
+        if (current - range > 1) pages.push(1, `\u002E\u002E\u002E`);
         for (let i = start; i <= end; i++) pages.push(i);
-        if (current + range < total) pages.push('...', total);
+        if (current + range < total) pages.push(`\u002E\u002E\u002E`, total);
 
         return (pages);
     };
@@ -229,7 +233,7 @@ class Pagination {
             if (!btn.textContent) return;
             btn.style.width = '';
             btn.style.width = (this.#convertPxToRem(btn.scrollWidth) > this.#config.buttonMinWidth)
-                ? `${this.#convertPxToRem(btn.scrollWidth) + 1}rem`
+                ? `${this.#convertPxToRem(btn.scrollWidth) + this.#config.buttonWidthPadding}rem`
                 : `${this.#config.buttonMinWidth}rem`
         });
     };
