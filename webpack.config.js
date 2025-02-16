@@ -86,6 +86,10 @@ return {
                 "@pages": path.resolve(__dirname, "src/pages"),
                 "@styles": path.resolve(__dirname, "src/assets/styles"),
                 "@data": path.resolve(__dirname, "src/assets/data"),
+                "@entities": path.resolve(__dirname, "src/entities"),
+                "@features": path.resolve(__dirname, "src/features"),
+                "@pages": path.resolve(__dirname, "src/pages"),
+                "@shared": path.resolve(__dirname, "src/shared")
             },
         },
         module: {
