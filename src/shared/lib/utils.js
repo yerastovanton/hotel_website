@@ -81,62 +81,99 @@ export const dom = {
     'output', 'progress', 'meter', 'details', 'summary', 'template'  
   ]),
 
-  isNotValidHTML(html) {
-    return (new DOMParser()
-      .parseFromString(html, 'text/html')
-      .querySelector('parsererror'))
+  typeSchema: {
+    tag: { type: 'html5Tag' },
+    classes: {
+      type: 'arrayOfStrings',
+      valueType: 'string'
+    },
+    attrs: {
+      type: 'arrayOfObjects',
+      keyType: 'string',
+      valueType: 'stringAndBoolean'
+    },
+    text: { type: 'string' },
+    html: { type: 'html' }
   },
 
-  createElement({ tag, classes, attrs, text, html } = {}) {
-    if (!tag) throw new Error(`Invalid HTML5 tag: ${tag}`);  
-    if (tag) {
-      const normalizedTag = tag.toLowerCase();
-      if (!this.html5Tags.has(normalizedTag)) {
-        throw new Error(`Invalid HTML5 tag: ${normalizedTag}`);
-      };
+  validateType(type, value) {
+    const validationRules = {
+      html5Tag: (value) => (this.html5Tags.has(value)),
+      arrayOfStrings: (value) => (
+        Array.isArray(value) &&
+        value.every((element) => typeof element  === 'string')
+      ),
+      arrayOfObjects: (value) => (
+        Array.isArray(value) &&
+        value.every((element) =>
+          typeof element === 'object' &&
+          typeof element !== null &&
+          Object.prototype.toString.call(element) === '[object Object]')
+      ),
+      string: (value) => (typeof value === 'string'),
+      stringAndBoolean: (value) => (
+        typeof value === 'string' ||
+        typeof value === 'boolean'
+      ),
+      html: (value) => {
+        return (new DOMParser()
+          .parseFromString(value, 'text/html')
+          .querySelector('parsererror')
+          ? false : true);
+      }
     };
+
+    if (!validationRules[type]) return (new Error(`Unknown type: ${type}`));
+
+    return (validationRules[type](value)
+      ? false
+      : (new Error(`Invalid ${value} - type is not ${type}`)));
+  },
+
+  validateElement(props) {
+    const errors = [];
+    const schema = this.typeSchema[key];
+
+    for (const key in props) {
+      if (props[key].type === 'arrayOfStrings') {
+        props[key].reduce(value => {
+          const error = this.validateType(schema.valueType, value);
+          if (error) errors.push(error);
+        });
+      };
+
+      if (props[key].type === 'arrayOfObjects') {
+        props[key].reduce(value => {
+          let error = this.validateType(schema.keyType, Object.keys(value));
+          if (error) errors.push(error);
+          error = this.validateType(schema.valueType, Object.values(value));
+          if (error) errors.push(error);
+        });
+      };
+
+      if (props[key].type === 'html5Tag' ||
+        props[key].type === 'html' ||
+        props[key].type === 'string') {
+        const error = this.validateType(schema.type, props[key]);
+        if (error) errors.push(error);
+      }; 
+    };
+
+    if (errors.length > 0) return (errors);
+    return (false);
+  },
+
+  createElement({ tag = 'div', classes, attrs, text, html } = {}) {
+    const normalizedTag = tag.toLowerCase();
+
+    const error = this.validateElement({ tag: normalizedTag, classes, attrs, text, html });
+    if (error) return (new AggregateError(error));
+
     const el = document.createElement(normalizedTag);
-
-    if (classes) {
-      if (typeof classes !== 'object') {
-        throw new Error(`Invalid classes: ${classes} - type in not object`);
-      };
-      for (const className in classes) {
-        if (typeof className !== 'string') {
-          throw new Error(
-            `Invalid classes: ${className} - type in not string`);
-        };
-        el.classList.add(className.trim());
-      };
-    };
-
-    if (attrs) {
-      if (typeof attrs !== 'object') {
-        throw new Error(`Invalid attributes: ${attrs} - type in not object`);
-      };
-      for (const key in attrs) {
-        const value = attrs[key];
-        if (typeof key !== 'string' || typeof value !== 'string') {
-          throw new Error(
-            `Invalid attributes: ${key}:${value}} - type in not string`);
-        };
-        el.setAttribute(key, value);
-      };
-    };
-    
-    if (text) {
-      if (typeof text !== 'string') {
-        throw new Error(`Invalid text: ${text} - type in not string`);
-      };
-      el.textContent = text;
-    };
-
-    if (html) {
-      if (this.isNotValidHTML(html)) {
-        throw new Error(`Invalid html: ${html} - type in not HTML`);
-      };
-      el.innerHTML = html;
-    };
+    if (classes) classes.forEach(className => el.classList.add(className.trim()));
+    if (attrs) attrs.forEach(({ key, value }) => el.setAttribute(key, value));
+    if (text) el.textContent = text;
+    if (html) this.helpers.safeSetInnerHTML(el, html);
 
     return (el);
   },
@@ -153,9 +190,9 @@ export const dom = {
   }
 };
 
-export const helpers = {
+export const helpers = Object.freeze({
   safeSetInnerHTML(element, html) {
     element.replaceChildren();
     element.insertAdjacentHTML('afterbegin', html);
   }
-};
+});
